@@ -48,7 +48,7 @@ class UpdateRoleRequest extends FormRequest
     public function passedValidation()
     {
         $this->merge([
-            'created_by' => Auth::id()
+            // 'created_by' => Auth::id()
         ]);
     }
 }
