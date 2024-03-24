@@ -27,35 +27,6 @@
     <div class="row">
 
 
-        <div class="col-md-6 p-2">
-            <div class="card">
-                <div class="card-body">
-                    <h2>Posts Report</h2>
-                    <div class="row">
-                        <div class="form-group col-8">
-                            <label for="posts_year">Select Year:</label>
-                            <select class="form-control" id="posts_year" name="year">
-                                @foreach($postsYears as $year)
-                                <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>{{ $year }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-    
-                        <div class="form-group col-4">
-                            <a href="{{ route('reports.download.csv') }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
-    
-                        </div>
-
-                    </div>
-
-                    <canvas id="postsChart" height="200"></canvas>
-
-
-                </div>
-                <!-- .card-body -->
-            </div>
-        </div>
-        <!-- .col-md-6 p-2 -->
 
 
 
@@ -111,9 +82,7 @@
         
     });
     
-    const post_selected_year = $('#posts_year').val();
-    var post_data = {!! json_encode($postsChartData) !!};
-    loadChart(post_data, 'postsChart', 'Post', post_selected_year)
+  
     
     
     const user_selected_year = $('#users_year').val();
