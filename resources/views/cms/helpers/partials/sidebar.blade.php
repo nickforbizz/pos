@@ -55,21 +55,30 @@
 				</li>
 				@endif
 
-		
-
-				<li class="nav-item @if(Route::is('productCategories.*')) active @endif">
-					<a href="{{ route('productCategories.index') }}">
+				<li class="nav-item @if(Route::is('products.*') || Route::is('productCategories.*')) active collapsed @else collapse @endif">
+					<a data-toggle="collapse" href="#sidebar_products">
 						<i class="far fa-clone"></i>
-						<p> Product Categories</p>
+						<span class="sub-item">Products</span>
+						<span class="caret"></span>
 					</a>
+					<div class="@if(Route::is('products.*') || Route::is('productCategories.*')) collapsed @else collapse @endif" id="sidebar_products">
+						<ul class="nav nav-collapse subnav">
+							<li class="nav-item @if(Route::is('productCategories.*')) active @endif">
+								<a href="{{ route('productCategories.index') }}">
+									<span class="sub-item">Categories</span>
+								</a>
+							</li>
+
+							<li class="nav-item @if(Route::is('products.*')) active @endif">
+								<a href="{{ route('products.index') }}">
+									<span class="sub-item">Products</span>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</li>
 
-				<li class="nav-item @if(Route::is('products.*')) active @endif">
-					<a href="{{ route('products.index') }}">
-						<i class="far fa-edit"></i>
-						<p> Products</p>
-					</a>
-				</li>
+
 
 				<li class="nav-item @if(Route::is('reports.*')) active @endif">
 					<a href="{{ route('reports.index') }}">
@@ -90,23 +99,22 @@
 					</a>
 					<div class="@if( Route::is('roles.*') || 
 								     Route::is('permissions.*') ||
-									 Route::is('notifications.*') ) collapsed @else collapse @endif" 
-									 id="submenu">
+									 Route::is('notifications.*') ) collapsed @else collapse @endif" id="submenu">
 						<ul class="nav nav-collapse">
-							<li>
+							<li  class="nav-item @if(Route::is('permissions.*') || Route::is('roles.*')) active @endif">
 								<a data-toggle="collapse" href="#subnav2">
 									<span class="sub-item">Users</span>
 									<span class="caret"></span>
 								</a>
 								<div class="@if(Route::is('roles.*') || Route::is('permissions.*')) collapsed @else collapse @endif" id="subnav2">
 									<ul class="nav nav-collapse subnav">
-										<li class=" @if(Route::is('roles.*')) active @endif">
+										<li class="nav-item @if(Route::is('roles.*')) active @endif">
 											<a href="{{ route('roles.index') }}">
 												<span class="sub-item">Roles</span>
 											</a>
 										</li>
 
-										<li class=" @if(Route::is('permissions.*')) active @endif">
+										<li class="nav-item @if(Route::is('permissions.*')) active @endif">
 											<a href="{{ route('permissions.index') }}">
 												<span class="sub-item">Permissions</span>
 											</a>
@@ -115,7 +123,7 @@
 								</div>
 							</li>
 
-							<li class=" @if(Route::is('notifications.*')) active @endif">
+							<li class="nav-item @if(Route::is('notifications.*')) active @endif">
 								<a href="{{ route('notifications.index') }}">
 									<span class="sub-item">Notifications </span>
 								</a>

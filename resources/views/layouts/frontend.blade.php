@@ -62,21 +62,29 @@
                 <!-- Navigation Collapse Start -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="nav navbar-nav ml-auto">
-                        
+                        @if(Route::is('wellcome'))  
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle scroll-nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Services
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#about">About</a>
+                                <a class="dropdown-item" href="#features">Features</a>
+                                <a class="dropdown-item" href="#pricing">Pricing</a>
+                                <a class="dropdown-item" href="#team">Team</a>
+                                <a class="dropdown-item" href="#support">Support</a>
+                            </div>
+                        </li>
+                        @else
                         <li class="nav-item mr-3">
                             <a class="nav-link scroll-nav-link" href="{{ route('wellcome') }}">Home</a>
                         </li>
-                        <li class="nav-item">
-                        <a class="nav-link scroll-nav-link" href="#features">Services</a>
+                        @endif
+                        <li class="nav-item mr-3">
+                            <a class="nav-link scroll-nav-link" href="{{ url('blogs') }}">Blog</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link scroll-nav-link" href="#about">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link scroll-nav-link" href="#support">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">login</a>
+                            <a class="nav-link scroll-nav-link" href="#support">Support</a>
                         </li>
                     </ul>
                 </div>

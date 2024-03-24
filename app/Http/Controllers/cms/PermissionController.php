@@ -27,7 +27,7 @@ class PermissionController extends Controller
                     return date_format($row->created_at, 'Y/m/d H:i');
                 })
                 ->editColumn('created_by', function ($row) {
-                    return isset($row->created_by) ? $row->user->email : 'N/A';
+                    return isset($row->created_by) ? $row?->user?->email : 'N/A';
                 })
                 ->addColumn('action', function ($row) {
                 $btn_edit = $btn_del = null;
