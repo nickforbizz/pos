@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class ProductCategory extends Model
+class ProductCategory extends BaseModel
 {
 	use SoftDeletes, HasFactory;
 	protected $table = 'product_categories';
