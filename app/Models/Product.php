@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $title
  * @property string $slug
  * @property string $description
- * @property string $price
+ * @property float $cost_price
  * @property string $quantity
  * @property string $color
  * @property string $size
@@ -31,9 +32,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property float|null $selling_price
  * 
  * @property ProductCategory $product_category
  * @property User $user
+ * @property Collection|OrderItem[] $order_items
  *
  * @package App\Models
  */
@@ -43,15 +46,17 @@ class Product extends Model
 	protected $table = 'products';
 
 	protected $casts = [
+		'cost_price' => 'float',
 		'created_by' => 'int',
-		'category_id' => 'int'
+		'category_id' => 'int',
+		'selling_price' => 'float'
 	];
 
 	protected $fillable = [
 		'title',
 		'slug',
 		'description',
-		'price',
+		'cost_price',
 		'quantity',
 		'color',
 		'size',
@@ -60,7 +65,8 @@ class Product extends Model
 		'created_by',
 		'category_id',
 		'active',
-		'status'
+		'status',
+		'selling_price'
 	];
 
 	public function product_category()
@@ -71,5 +77,10 @@ class Product extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'created_by');
+	}
+
+	public function order_items()
+	{
+		return $this->hasMany(OrderItem::class, 'fk_product');
 	}
 }
