@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class OrderItem
  * 
  * @property int $id
+ * @property int|null $fk_tenant
  * @property int|null $fk_order
  * @property int|null $fk_product
  * @property int|null $quantity
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 
  * @property Order|null $order
  * @property Product|null $product
+ * @property Tenant|null $tenant
  *
  * @package App\Models
  */
@@ -36,6 +38,7 @@ class OrderItem extends Model
 	protected $table = 'order_items';
 
 	protected $casts = [
+		'fk_tenant' => 'int',
 		'fk_order' => 'int',
 		'fk_product' => 'int',
 		'quantity' => 'int',
@@ -45,6 +48,7 @@ class OrderItem extends Model
 	];
 
 	protected $fillable = [
+		'fk_tenant',
 		'fk_order',
 		'fk_product',
 		'quantity',
@@ -61,5 +65,10 @@ class OrderItem extends Model
 	public function product()
 	{
 		return $this->belongsTo(Product::class, 'fk_product');
+	}
+
+	public function tenant()
+	{
+		return $this->belongsTo(Tenant::class, 'fk_tenant');
 	}
 }

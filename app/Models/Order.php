@@ -11,12 +11,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Testing\Fluent\Concerns\Has;
 
 /**
  * Class Order
  * 
  * @property int $id
+ * @property int|null $fk_tenant
  * @property int|null $fk_customer
  * @property int|null $fk_employee
  * @property Carbon|null $order_date
@@ -29,6 +29,7 @@ use Illuminate\Testing\Fluent\Concerns\Has;
  * 
  * @property Customer|null $customer
  * @property Employee|null $employee
+ * @property Tenant|null $tenant
  * @property Collection|OrderItem[] $order_items
  *
  * @package App\Models
@@ -39,6 +40,7 @@ class Order extends Model
 	protected $table = 'orders';
 
 	protected $casts = [
+		'fk_tenant' => 'int',
 		'fk_customer' => 'int',
 		'fk_employee' => 'int',
 		'order_date' => 'date',
@@ -47,6 +49,7 @@ class Order extends Model
 	];
 
 	protected $fillable = [
+		'fk_tenant',
 		'fk_customer',
 		'fk_employee',
 		'order_date',
@@ -63,6 +66,11 @@ class Order extends Model
 	public function employee()
 	{
 		return $this->belongsTo(Employee::class, 'fk_employee');
+	}
+
+	public function tenant()
+	{
+		return $this->belongsTo(Tenant::class, 'fk_tenant');
 	}
 
 	public function order_items()

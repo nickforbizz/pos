@@ -12,49 +12,35 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Supplier
+ * Class Tenant
  * 
  * @property int $id
- * @property int|null $fk_tenant
- * @property string $name
- * @property string $email
- * @property string|null $phone
- * @property string|null $address
- * @property string|null $contact_person
+ * @property string|null $name
+ * @property string|null $domain
+ * @property string|null $email
  * @property int|null $status
  * @property int|null $active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * 
- * @property Tenant|null $tenant
  *
  * @package App\Models
  */
-class Supplier extends Model
+class Tenant extends Model
 {
 	use SoftDeletes, HasFactory;
-	protected $table = 'suppliers';
+	protected $table = 'tenants';
 
 	protected $casts = [
-		'fk_tenant' => 'int',
 		'status' => 'int',
 		'active' => 'int'
 	];
 
 	protected $fillable = [
-		'fk_tenant',
 		'name',
+		'domain',
 		'email',
-		'phone',
-		'address',
-		'contact_person',
 		'status',
 		'active'
 	];
-
-	public function tenant()
-	{
-		return $this->belongsTo(Tenant::class, 'fk_tenant');
-	}
 }

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class EmployeeAttendance
  * 
  * @property int $id
+ * @property int|null $fk_tenant
  * @property int|null $fk_employee
  * @property Carbon|null $date
  * @property Carbon|null $clock_in
@@ -35,6 +36,7 @@ class EmployeeAttendance extends Model
 	protected $table = 'employee_attendance';
 
 	protected $casts = [
+		'fk_tenant' => 'int',
 		'fk_employee' => 'int',
 		'date' => 'date',
 		'clock_in' => 'date',
@@ -43,6 +45,7 @@ class EmployeeAttendance extends Model
 	];
 
 	protected $fillable = [
+		'fk_tenant',
 		'fk_employee',
 		'date',
 		'clock_in',

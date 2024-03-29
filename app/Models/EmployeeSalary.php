@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class EmployeeSalary
  * 
  * @property int $id
+ * @property int|null $fk_tenant
  * @property int|null $fk_employee
  * @property float|null $amount
  * @property string|null $pay_frequency
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * 
  * @property Employee|null $employee
+ * @property Tenant|null $tenant
  *
  * @package App\Models
  */
@@ -35,6 +37,7 @@ class EmployeeSalary extends Model
 	protected $table = 'employee_salaries';
 
 	protected $casts = [
+		'fk_tenant' => 'int',
 		'fk_employee' => 'int',
 		'amount' => 'float',
 		'pay_date' => 'date',
@@ -43,6 +46,7 @@ class EmployeeSalary extends Model
 	];
 
 	protected $fillable = [
+		'fk_tenant',
 		'fk_employee',
 		'amount',
 		'pay_frequency',
@@ -54,5 +58,10 @@ class EmployeeSalary extends Model
 	public function employee()
 	{
 		return $this->belongsTo(Employee::class, 'fk_employee');
+	}
+
+	public function tenant()
+	{
+		return $this->belongsTo(Tenant::class, 'fk_tenant');
 	}
 }

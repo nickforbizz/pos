@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class Customer
  * 
  * @property int $id
+ * @property int|null $fk_tenant
  * @property string $name
  * @property string $email
  * @property string|null $phone
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
  * 
+ * @property Tenant|null $tenant
  * @property Collection|Order[] $orders
  *
  * @package App\Models
@@ -37,11 +39,13 @@ class Customer extends Model
 	protected $table = 'customers';
 
 	protected $casts = [
+		'fk_tenant' => 'int',
 		'status' => 'int',
 		'active' => 'int'
 	];
 
 	protected $fillable = [
+		'fk_tenant',
 		'name',
 		'email',
 		'phone',
@@ -50,6 +54,11 @@ class Customer extends Model
 		'status',
 		'active'
 	];
+
+	public function tenant()
+	{
+		return $this->belongsTo(Tenant::class, 'fk_tenant');
+	}
 
 	public function orders()
 	{

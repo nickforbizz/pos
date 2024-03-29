@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class Employee
  * 
  * @property int $id
+ * @property int|null $fk_tenant
  * @property string|null $name
  * @property string $email
  * @property string|null $phone
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
  * 
+ * @property Tenant|null $tenant
  * @property Collection|EmployeeAttendance[] $employee_attendances
  * @property Collection|EmployeeSalary[] $employee_salaries
  * @property Collection|Order[] $orders
@@ -38,11 +40,13 @@ class Employee extends Model
 	protected $table = 'employees';
 
 	protected $casts = [
+		'fk_tenant' => 'int',
 		'status' => 'int',
 		'active' => 'int'
 	];
 
 	protected $fillable = [
+		'fk_tenant',
 		'name',
 		'email',
 		'phone',
@@ -50,6 +54,11 @@ class Employee extends Model
 		'status',
 		'active'
 	];
+
+	public function tenant()
+	{
+		return $this->belongsTo(Tenant::class, 'fk_tenant');
+	}
 
 	public function employee_attendances()
 	{
