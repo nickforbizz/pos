@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\cms;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TenantRequest;
 use Illuminate\Http\Request;
 use DataTables;
 use App\Models\Tenant;
@@ -66,7 +67,7 @@ class TenantController extends Controller
      */
     public function store(TenantRequest $request)
     {
-        Tenant::create($request->all());
+        Tenant::create($request->validated());
         return redirect()->back()->with('success', 'Record Created Successfully');
     }
 
@@ -92,7 +93,7 @@ class TenantController extends Controller
      */
     public function update(TenantRequest $request, Tenant $tenant)
     {
-        $tenant->update($request->all());
+        $tenant->update($request->validated());
 
         // Redirect the user to the user's profile page
         return redirect()
