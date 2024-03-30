@@ -62,6 +62,13 @@
 					</a>
 				</li>
 
+				<li class="nav-item @if(Route::is('employees.*')) active @endif">
+					<a href="{{ route('employees.index') }}">
+						<i class="fa fa-user-circle"></i>
+						<span class="sub-item">Employees </span>
+					</a>
+				</li>
+
 				<li class="nav-item @if(Route::is('products.*') || Route::is('productCategories.*')) active collapsed @else collapse @endif">
 					<a data-toggle="collapse" href="#sidebar_products">
 						<i class="far fa-clone"></i>
