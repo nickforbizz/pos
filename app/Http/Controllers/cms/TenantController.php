@@ -21,6 +21,9 @@ class TenantController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($row) {
+                    if(is_null($row->created_at)){
+                        return 'N/A';
+                    }
                     return date_format($row->created_at, 'Y/m/d H:i');
                 })
                 ->addColumn('action', function ($row) {

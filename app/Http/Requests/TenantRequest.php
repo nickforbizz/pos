@@ -26,7 +26,7 @@ class TenantRequest extends FormRequest
         $rules = [
             'name' => 'required|string|max:255',
             'domain' => 'required|string|unique:tenants,domain',
-            'email' => 'required|string|email|unique:tenants,email',
+            'email' => 'required|string|email',
         ];
 
         // Modify rules based on request method (create or edit)

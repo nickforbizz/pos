@@ -55,6 +55,13 @@
 				</li>
 				@endif
 
+				<li class="nav-item @if(Route::is('tenants.*')) active @endif">
+					<a href="{{ route('tenants.index') }}">
+						<i class="fa fa-users"></i>
+						<span class="sub-item">Tenants</span>
+					</a>
+				</li>
+
 				<li class="nav-item @if(Route::is('products.*') || Route::is('productCategories.*')) active collapsed @else collapse @endif">
 					<a data-toggle="collapse" href="#sidebar_products">
 						<i class="far fa-clone"></i>
@@ -79,7 +86,6 @@
 				</li>
 
 
-
 				<li class="nav-item @if(Route::is('reports.*')) active @endif">
 					<a href="{{ route('reports.index') }}">
 						<i class="far fa-edit"></i>
@@ -101,7 +107,7 @@
 								     Route::is('permissions.*') ||
 									 Route::is('notifications.*') ) collapsed @else collapse @endif" id="submenu">
 						<ul class="nav nav-collapse">
-							<li  class="nav-item @if(Route::is('permissions.*') || Route::is('roles.*')) active @endif">
+							<li class="nav-item @if(Route::is('permissions.*') || Route::is('roles.*')) active @endif">
 								<a data-toggle="collapse" href="#subnav2">
 									<span class="sub-item">Users</span>
 									<span class="caret"></span>
