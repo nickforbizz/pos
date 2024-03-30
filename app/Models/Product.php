@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class Product
  * 
  * @property int $id
+ * @property int|null $fk_tenant
  * @property string $title
  * @property string $slug
  * @property string $description
@@ -36,6 +37,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 
  * @property ProductCategory $product_category
  * @property User $user
+ * @property Tenant|null $tenant
  * @property Collection|OrderItem[] $order_items
  *
  * @package App\Models
@@ -46,6 +48,7 @@ class Product extends Model
 	protected $table = 'products';
 
 	protected $casts = [
+		'fk_tenant' => 'int',
 		'cost_price' => 'float',
 		'created_by' => 'int',
 		'category_id' => 'int',
@@ -53,6 +56,7 @@ class Product extends Model
 	];
 
 	protected $fillable = [
+		'fk_tenant',
 		'title',
 		'slug',
 		'description',
@@ -77,6 +81,11 @@ class Product extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'created_by');
+	}
+
+	public function tenant()
+	{
+		return $this->belongsTo(Tenant::class, 'fk_tenant');
 	}
 
 	public function order_items()

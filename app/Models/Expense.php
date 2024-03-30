@@ -12,15 +12,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Supplier
+ * Class Expense
  * 
  * @property int $id
  * @property int|null $fk_tenant
- * @property string $name
- * @property string $email
- * @property string|null $phone
- * @property string|null $address
- * @property string|null $contact_person
+ * @property Carbon|null $date
+ * @property float|null $amount
+ * @property string|null $category
+ * @property string|null $description
  * @property int|null $status
  * @property int|null $active
  * @property Carbon|null $created_at
@@ -31,24 +30,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class Supplier extends Model
+class Expense extends Model
 {
 	use SoftDeletes, HasFactory;
-	protected $table = 'suppliers';
+	protected $table = 'expenses';
 
 	protected $casts = [
 		'fk_tenant' => 'int',
+		'date' => 'date',
+		'amount' => 'float',
 		'status' => 'int',
 		'active' => 'int'
 	];
 
 	protected $fillable = [
 		'fk_tenant',
-		'name',
-		'email',
-		'phone',
-		'address',
-		'contact_person',
+		'date',
+		'amount',
+		'category',
+		'description',
 		'status',
 		'active'
 	];

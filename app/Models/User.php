@@ -11,15 +11,17 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+
 /**
  * Class User
  * 
  * @property int $id
+ * @property int|null $fk_tenant
  * @property string $fname
  * @property string|null $lname
  * @property string|null $sname
@@ -37,19 +39,22 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Collection|PostCategory[] $post_categories
- * @property Collection|Post[] $posts
+ * @property Tenant|null $tenant
+ * @property Collection|Guard[] $guards
+ * @property Collection|Permission[] $permissions
+ * @property Collection|ProductCategory[] $product_categories
+ * @property Collection|Product[] $products
  *
  * @package App\Models
  */
 class User extends Authenticatable
 {
 	use HasApiTokens, HasFactory, Notifiable, HasRoles, HasPermissions;
-
 	use SoftDeletes;
 	protected $table = 'users';
 
 	protected $casts = [
+		'fk_tenant' => 'int',
 		'email_verified_at' => 'date',
 		'two_factor_confirmed_at' => 'date'
 	];
@@ -61,6 +66,7 @@ class User extends Authenticatable
 	];
 
 	protected $fillable = [
+		'fk_tenant',
 		'fname',
 		'lname',
 		'sname',
@@ -76,24 +82,28 @@ class User extends Authenticatable
 		'remember_token'
 	];
 
-	public function post_categories()
+	public function tenant()
 	{
-		return $this->hasMany(PostCategory::class, 'created_by');
+		return $this->belongsTo(Tenant::class, 'fk_tenant');
 	}
 
-	public function posts()
+	public function guards()
 	{
-		return $this->hasMany(Post::class, 'created_by');
+		return $this->hasMany(Guard::class, 'created_by');
 	}
 
-	
+	public function permissions()
+	{
+		return $this->hasMany(Permission::class, 'created_by');
+	}
 
-	/**
-     * Hash the password before saving the user record.
-     */
-    public function setPasswordAttribute($password)
-    {   
-        $this->attributes['password'] = bcrypt($password);
-    }
+	public function product_categories()
+	{
+		return $this->hasMany(ProductCategory::class, 'created_by');
+	}
 
+	public function products()
+	{
+		return $this->hasMany(Product::class, 'created_by');
+	}
 }
