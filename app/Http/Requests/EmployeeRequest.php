@@ -52,9 +52,13 @@ class EmployeeRequest extends FormRequest
 
     protected function prepareForValidation()
     {
+        $fk_tenant = $this->input('fk_tenant');
+        if (!auth()->user()->hasAnyRole(['superadmin'])) {
+            $fk_tenant = auth()->user()->fk_tenant;
+        }
         $this->merge([
             // 'slug' => Str::slug($this->input('name')),
-            // 'created_by' => auth()->user()->id
+            'fk_tenant' => $fk_tenant,
         ]);
     }
 }

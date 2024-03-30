@@ -2,6 +2,7 @@
 
 use App\Events\UserRegistered;
 use App\Http\Controllers\cms\AssignRoleController;
+use App\Http\Controllers\cms\EmployeeController;
 use App\Http\Controllers\cms\NotificationController;
 use App\Http\Controllers\cms\PermissionController;
 use App\Http\Controllers\cms\UserController;
@@ -96,7 +97,7 @@ Route::middleware('cms')->group(function () {
         'reports' => ReportController::class,
         'notifications' => NotificationController::class,
         'tenants' => TenantController::class,
-        'employees' => TenantController::class,
+        'employees' => EmployeeController::class,
     ]);
 
     // CART Routes

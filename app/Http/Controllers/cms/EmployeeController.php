@@ -7,6 +7,7 @@ use App\Http\Requests\EmployeeRequest;
 use Illuminate\Http\Request;
 use DataTables;
 use App\Models\Employee;
+use App\Models\Tenant;
 
 class EmployeeController extends Controller
 {
@@ -62,7 +63,9 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('cms.employees.create');
+        // get active tenants
+        $tenants = Tenant::where('active',1)->get();
+        return view('cms.employees.create', compact('tenants'));
     }
 
     /**
