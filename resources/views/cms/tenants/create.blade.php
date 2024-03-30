@@ -3,7 +3,7 @@
 @section('content')
 <div class="page-inner">
     <div class="page-header">
-        <h4 class="page-title"> Post Tenants </h4>
+        <h4 class="page-title">  Tenants </h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
                 <a href="#">
@@ -14,7 +14,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Post Tenants</a>
+                <a href="#"> Tenants</a>
             </li>
             <li class="separator">
                 <i class="flaticon-right-arrow"></i>
