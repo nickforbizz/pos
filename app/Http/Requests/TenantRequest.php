@@ -27,6 +27,10 @@ class TenantRequest extends FormRequest
             'name' => 'required|string|max:255',
             'domain' => 'required|string|unique:tenants,domain',
             'email' => 'required|string|email',
+            
+            // non required fields
+            'status' => 'nullable|string',
+            'active' => 'nullable|string',
         ];
 
         // Modify rules based on request method (create or edit)

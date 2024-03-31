@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
-class EmployeeRequest extends FormRequest
+class EmployeeSalaryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,15 @@ class EmployeeRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email',
-            'phone' => 'required|string|max:255',
+            'amount' => 'required',
+            'pay_frequency' => 'required|string|',
+            'pay_date' => 'required',
             'fk_tenant' => 'required|exists:tenants,id',
+            'fk_employee' => 'required|exists:employees,id',
+
+            // non required fields
+            'status' => 'nullable|string',
+            'active' => 'nullable|string',
         ];
 
         // Modify rules based on request method (create or edit)
@@ -44,12 +49,7 @@ class EmployeeRequest extends FormRequest
         return [
             'unique' => ':attribute is already used',
             'required' => 'The :attribute field is required.',
-            'fk_tenant.required' => 'Please select a valid tenant.',
-            'fk_tenant.exists' => 'The selected tenant does not exist.',
-            // non required fields
-            'address' => 'nullable|string',
-            'status' => 'nullable|string',
-            'active' => 'nullable|string',
+            'exists' => 'The selected :attribute does not exist.'
         ];
     }
 
