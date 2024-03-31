@@ -104,7 +104,7 @@
 
                         <div class="card">
                             <div class="form-group">
-                                <button class="btn btn-success btn-round float-right">Submit</button>
+                                <button class="btn btn-success btn-round btn-block float-right">Submit</button>
                             </div>
                         </div>
                     </form>
