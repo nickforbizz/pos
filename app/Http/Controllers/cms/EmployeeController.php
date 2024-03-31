@@ -91,7 +91,8 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        return view('cms.employees.create', compact('employee'));
+        $tenants = Tenant::where('active',1)->get();
+        return view('cms.employees.create', compact('employee','tenants'));
     }
 
     /**
