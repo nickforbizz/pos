@@ -45,7 +45,9 @@ class EmployeeRequest extends FormRequest
             'unique' => ':attribute is already used',
             'required' => 'The :attribute field is required.',
             'fk_tenant.required' => 'Please select a valid tenant.',
-            'fk_tenant.exists' => 'The selected tenant does not exist.'
+            'fk_tenant.exists' => 'The selected tenant does not exist.',
+            // non required fields
+            'address' => 'nullable|string',
         ];
     }
 

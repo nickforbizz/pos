@@ -28,6 +28,9 @@ class CustomerRequest extends FormRequest
             'email' => 'required|string|email',
             'phone' => 'required|string|max:255',
             'fk_tenant' => 'required|exists:tenants,id',
+            // non required fields
+            'address' => 'nullable|string',
+            'company' => 'nullable|string',
         ];
 
         // Modify rules based on request method (create or edit)
