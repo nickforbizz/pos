@@ -12,6 +12,7 @@ use App\Http\Controllers\cms\ProductController;
 use App\Http\Controllers\cms\ReportController;
 use App\Http\Controllers\cms\RoleController;
 use App\Http\Controllers\cms\SearchController;
+use App\Http\Controllers\cms\SupplierController;
 use App\Http\Controllers\cms\TenantController;
 use App\Http\Controllers\frontend\ViewsController;
 use App\Http\Controllers\HomeController;
@@ -54,7 +55,7 @@ Route::get('/optimize', function () {
 
 Route::get('/flush-perms', function () {
     Artisan::call('permission:cache-reset');
-    return 'Flushing Permissions';
+    return 'Done Flushing Permissions';
 });
 
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
@@ -100,6 +101,7 @@ Route::middleware('cms')->group(function () {
         'tenants' => TenantController::class,
         'employees' => EmployeeController::class,
         'customers' => CustomerController::class,
+        'suppliers' => SupplierController::class,
     ]);
 
     // CART Routes
