@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
-class EmployeeRequest extends FormRequest
+class CustomerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,6 +28,9 @@ class EmployeeRequest extends FormRequest
             'email' => 'required|string|email',
             'phone' => 'required|string|max:255',
             'fk_tenant' => 'required|exists:tenants,id',
+            // non required fields
+            'address' => 'nullable|string',
+            'company' => 'nullable|string',
         ];
 
         // Modify rules based on request method (create or edit)
@@ -45,9 +48,7 @@ class EmployeeRequest extends FormRequest
             'unique' => ':attribute is already used',
             'required' => 'The :attribute field is required.',
             'fk_tenant.required' => 'Please select a valid tenant.',
-            'fk_tenant.exists' => 'The selected tenant does not exist.',
-            // non required fields
-            'address' => 'nullable|string',
+            'fk_tenant.exists' => 'The selected tenant does not exist.'
         ];
     }
 

@@ -2,6 +2,7 @@
 
 use App\Events\UserRegistered;
 use App\Http\Controllers\cms\AssignRoleController;
+use App\Http\Controllers\cms\CustomerController;
 use App\Http\Controllers\cms\EmployeeController;
 use App\Http\Controllers\cms\NotificationController;
 use App\Http\Controllers\cms\PermissionController;
@@ -53,7 +54,7 @@ Route::get('/optimize', function () {
 
 Route::get('/flush-perms', function () {
     Artisan::call('permission:cache-reset');
-    // return what you want
+    return 'Flushing Permissions';
 });
 
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
@@ -98,6 +99,7 @@ Route::middleware('cms')->group(function () {
         'notifications' => NotificationController::class,
         'tenants' => TenantController::class,
         'employees' => EmployeeController::class,
+        'customers' => CustomerController::class,
     ]);
 
     // CART Routes
