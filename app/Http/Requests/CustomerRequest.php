@@ -31,6 +31,8 @@ class CustomerRequest extends FormRequest
             // non required fields
             'address' => 'nullable|string',
             'company' => 'nullable|string',
+            'status' => 'nullable|string',
+            'active' => 'nullable|string',
         ];
 
         // Modify rules based on request method (create or edit)
