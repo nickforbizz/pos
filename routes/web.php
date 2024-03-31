@@ -98,6 +98,7 @@ Route::middleware('cms')->group(function () {
         'notifications' => NotificationController::class,
         'tenants' => TenantController::class,
         'employees' => EmployeeController::class,
+        'customers' => CustomerController::class,
     ]);
 
     // CART Routes
