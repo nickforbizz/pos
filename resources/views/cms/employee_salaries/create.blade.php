@@ -58,23 +58,47 @@
 
 
                         <div class="form-group">
-                            <label for="name" > Name</label>
-                            <input id="name" type="text" class="form-control " name="name" value="{{ $employee_salary->name ?? '' }}" placeholder="Enter your input" required="true" />
+                            <label for="amount" > Amount </label>
+                            <input id="amount" type="text" class="form-control " name="amount" value="{{ $employee_salary->amount ?? '' }}" placeholder="Enter your input" required="true" />
                             @error('name') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group">
-                            <label for="email"> Email</label>
-                            <input id="email" type="text" class="form-control " name="email" value="{{ $employee_salary->email ?? '' }}" placeholder="Enter your input" required="true" />
-                            @error('email') <span class="text-danger">{{ $message }}</span>
+                            <label for="pay_date"> Pay Date</label>
+                            <input id="pay_date" type="date" class="form-control " name="pay_date" value="{{ $employee_salary->pay_date ?? '' }}" placeholder="Enter your input" required="true" />
+                            @error('pay_date') <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pay_frequency"> Pay Frequency</label>
+                            <select name="pay_frequency" id="pay_frequency" class="form-control">
+                                <option value="monthly" @if(isset($employee_salary->id)) {{  $employee_salary->pay_frequency =='monthly' ?'selected' : '' }} @endif> Monthly </option>
+                                <option value="weekly" @if(isset($employee_salary->id)) {{  $employee_salary->pay_frequency =='weekly' ?'selected' : '' }} @endif> Weekly </option>
+                                <option value="bi-weekly" @if(isset($employee_salary->id)) {{  $employee_salary->pay_frequency =='bi-weekly' ?'selected' : '' }} @endif> Bi-Weekly </option>
+                            </select>
+                            @error('fk_employee') <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="employee">Employee</label>
+                            <select name="fk_employee" id="fk_employee" class="form-control">
+                                @forelse($employees as $employee) 
+                                    <option value="{{ $employee->id }}" @if(isset($employee_salary->id)) {{  $employee->id == $employee_salary->fk_employee ? 'selected' : '' }} @endif> {{ $employee->name }} </option>
+                                @empty
+                                    <option selected disabled> -- No item -- </option> 
+                                @endforelse
+                            </select>
+                            @error('fk_employee') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
                         @if(auth()->user()->hasAnyRole(['superadmin']))
                         <div class="form-group">
                             <label for="tenant">Tenant</label>
-                            <select name="fk_tenant" id="fk_tenant" class="form-control form-control">
+                            <select name="fk_tenant" id="fk_tenant" class="form-control">
                                 @forelse($tenants as $tenant) 
                                     <option value="{{ $tenant->id }}" @if(isset($employee_salary->id)) {{  $tenant->id == $employee_salary->fk_tenant ? 'selected' : '' }} @endif> {{ $tenant->name }} </option>
                                 @empty
@@ -86,21 +110,6 @@
                         </div>
                         @endif
 
-                        <div class="form-group">
-                            <label for="phone" > Phone</label>
-                            <input id="phone" type="text" class="form-control " name="phone" value="{{ $employee_salary->phone ?? '' }}" placeholder="Enter your input" required="true" />
-                            @error('phone') <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="address" > Address</label>
-                            <input id="address" type="text" class="form-control " name="address" value="{{ $employee_salary->address ?? '' }}" placeholder="Enter your input" required="true" />
-                            @error('address') <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                     
 
                         <div class="card">
                             <div class="form-group">

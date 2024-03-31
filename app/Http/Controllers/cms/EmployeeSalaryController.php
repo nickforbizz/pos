@@ -8,7 +8,9 @@ use DataTables;
 
 use App\Models\Tenant;
 use App\Http\Requests\EmployeeSalaryRequest;
+use App\Models\Employee;
 use App\Models\EmployeeSalary;
+use Carbon\Carbon;
 
 class EmployeeSalaryController extends Controller
 {
@@ -27,6 +29,12 @@ class EmployeeSalaryController extends Controller
                         return 'N/A';
                     }
                     return date_format($row->created_at, 'Y/m/d H:i');
+                })
+                ->editColumn('pay_date', function ($row) {
+                    if(is_null($row->pay_date)){
+                        return 'N/A';
+                    }
+                    return date_format($row->pay_date, 'Y/m/d');
                 })
                 ->editColumn('employee', function ($row) {
                     if(is_null($row->fk_employee)){
@@ -72,7 +80,8 @@ class EmployeeSalaryController extends Controller
     {
         // get active tenants
         $tenants = Tenant::where('active',1)->get();
-        return view('cms.employee_salaries.create', compact('tenants'));
+        $employees = Employee::where('active',1)->get();
+        return view('cms.employee_salaries.create', compact('tenants', 'employees'));
     }
 
     /**
@@ -99,7 +108,9 @@ class EmployeeSalaryController extends Controller
     public function edit(EmployeeSalary $employee_salary)
     {
         $tenants = Tenant::where('active',1)->get();
-        return view('cms.employee_salaries.create', compact('employee_salary','tenants'));
+        $employees = Employee::where('active',1)->get();
+        $employee_salary->pay_date = Carbon::create($employee_salary->pay_date)->format('Y-m-d');
+        return view('cms.employee_salaries.create', compact('employee_salary','tenants', 'employees'));
     }
 
     /**

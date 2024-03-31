@@ -85,7 +85,7 @@
 
 				<li class="nav-item @if(Route::is('employee_salaries.*')) active @endif">
 					<a href="{{ route('employee_salaries.index') }}">
-						<i class="fas fa-user-tag"></i>
+						<i class="fas fa-money-check-alt"></i>
 						<span class="sub-item"> Employee Salaries </span>
 					</a>
 				</li>
