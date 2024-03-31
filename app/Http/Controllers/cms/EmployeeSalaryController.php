@@ -28,6 +28,12 @@ class EmployeeSalaryController extends Controller
                     }
                     return date_format($row->created_at, 'Y/m/d H:i');
                 })
+                ->editColumn('employee', function ($row) {
+                    if(is_null($row->fk_employee)){
+                        return 'N/A';
+                    }
+                    return $row->employee->name;
+                })
                 ->addColumn('action', function ($row) {
                     $btn_edit = $btn_del = null;
                     if (auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) {
