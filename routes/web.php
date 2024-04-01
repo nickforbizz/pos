@@ -3,6 +3,7 @@
 use App\Events\UserRegistered;
 use App\Http\Controllers\cms\AssignRoleController;
 use App\Http\Controllers\cms\CustomerController;
+use App\Http\Controllers\cms\EmployeeAttendanceController;
 use App\Http\Controllers\cms\EmployeeController;
 use App\Http\Controllers\cms\EmployeeSalaryController;
 use App\Http\Controllers\cms\NotificationController;
@@ -104,6 +105,7 @@ Route::middleware('cms')->group(function () {
         'customers' => CustomerController::class,
         'suppliers' => SupplierController::class,
         'employee_salaries' => EmployeeSalaryController::class,
+        'employee_attendance' => EmployeeAttendanceController::class,
     ]);
 
     // CART Routes

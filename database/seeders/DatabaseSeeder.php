@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(SupplierSeeder::class);
+        $this->call(EmployeeSalarySeeder::class);
+        $this->call(EmployeeAttendanceSeeder::class);
+        $this->call(TenantSeeder::class);
         
         $this->call(GuardSeeder::class);
         $this->call(PermissionTableSeeder::class);
