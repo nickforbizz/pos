@@ -59,7 +59,7 @@
 
                         <div class="form-group">
                             <label for="order_date"> Order Date</label> 
-                            <input id="order_date" type="date" class="form-control " name="order_date" value="{{ date_format($order->order_date, 'Y-m-d') ?? '' }}" placeholder="Enter your input" required="true" />
+                            <input id="order_date" type="date" class="form-control " name="order_date" value="@if(isset($order->id)) {{ date_format($order->order_date, 'Y-m-d') ?? '' }} @endif" placeholder="Enter your input" required="true" />
                             @error('order_date') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
