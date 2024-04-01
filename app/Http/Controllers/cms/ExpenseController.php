@@ -8,11 +8,7 @@ use DataTables;
 
 use App\Models\Tenant;
 use App\Http\Requests\ExpenseRequest;
-use App\Models\Customer;
-use App\Models\Employee;
 use App\Models\Expense;
-use App\Models\Expense;
-use Carbon\Carbon;
 
 class ExpenseController extends Controller
 {
@@ -22,7 +18,7 @@ class ExpenseController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = Expense::ExpenseBy('created_at', 'desc')->get();
+        $data = Expense::OrderBy('created_at', 'desc')->get();
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()
