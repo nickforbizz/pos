@@ -99,7 +99,7 @@
 
 				<li class="nav-item @if(Route::is('orders.*')) active @endif">
 					<a href="{{ route('orders.index') }}">
-						<i class="fas fa-user-clock"></i>
+						<i class="fas fa-shopping-bag"></i>
 						<span class="sub-item"> Orders </span>
 					</a>
 				</li>

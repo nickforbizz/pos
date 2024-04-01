@@ -32,10 +32,10 @@ class OrderController extends Controller
                     return date_format($row->created_at, 'Y/m/d H:i');
                 })
                 ->editColumn('order_date', function ($row) {
-                    if(is_null($row->date)){
+                    if(is_null($row->order_date)){
                         return 'N/A';
                     }
-                    return date_format($row->date, 'Y/m/d');
+                    return date_format($row->order_date, 'Y/m/d');
                 })
                 ->editColumn('employee', function ($row) {
                     if(is_null($row->fk_employee)){
@@ -118,7 +118,7 @@ class OrderController extends Controller
         $tenants = Tenant::where('active',1)->get();
         $employees = Employee::where('active',1)->get();
         $customers = Customer::where('active',1)->get();
-        return view('cms.orders.create', compact('orders','tenants', 'employees', 'customers'));
+        return view('cms.orders.create', compact('order','tenants', 'employees', 'customers'));
     }
 
     /**
