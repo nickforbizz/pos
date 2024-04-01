@@ -97,6 +97,13 @@
 					</a>
 				</li>
 
+				<li class="nav-item @if(Route::is('orders.*')) active @endif">
+					<a href="{{ route('orders.index') }}">
+						<i class="fas fa-shopping-bag"></i>
+						<span class="sub-item"> Orders </span>
+					</a>
+				</li>
+
 				<li class="nav-item @if(Route::is('products.*') || Route::is('productCategories.*')) active collapsed @else collapse @endif">
 					<a data-toggle="collapse" href="#sidebar_products">
 						<i class="far fa-clone"></i>
