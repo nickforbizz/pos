@@ -92,7 +92,7 @@
 
 				<li class="nav-item @if(Route::is('employee_attendance.*')) active @endif">
 					<a href="{{ route('employee_attendance.index') }}">
-						<i class="fas fa-money-check-alt"></i>
+						<i class="fas fa-user-clock"></i>
 						<span class="sub-item"> Employee Attendance </span>
 					</a>
 				</li>

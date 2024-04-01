@@ -3,7 +3,7 @@
 @section('content')
 <div class="page-inner">
     <div class="page-header">
-        <h4 class="page-title"> Employee Salary </h4>
+        <h4 class="page-title"> Employee Attendance </h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
                 <a href="#">
@@ -14,7 +14,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Employee Salary</a>
+                <a href="#">Employee Attendance</a>
             </li>
             <li class="separator">
                 <i class="flaticon-right-arrow"></i>
@@ -32,7 +32,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Add|Edit Record</h4>
-                        <a href="{{ route('employee_salaries.index') }}" class="btn btn-primary btn-round ml-auto" >
+                        <a href="{{ route('employee_attendance.index') }}" class="btn btn-primary btn-round ml-auto" >
                             <i class="flaticon-left-arrow-4 mr-2"></i>
                             View Records
                         </a> 
@@ -42,15 +42,15 @@
 
                     <!-- form -->
                     @include('cms.helpers.partials.feedback')
-                    <form id="employee_salaries-create" 
-                            action="@if(isset($employee_salary->id))  
-                            {{ route('employee_salaries.update', ['employee_salary' => $employee_salary->id]) }}
-                            @else {{ route('employee_salaries.store' ) }} @endif"  
+                    <form id="employee_attendance-create" 
+                            action="@if(isset($employee_attendance->id))  
+                            {{ route('employee_attendance.update', ['employee_attendance' => $employee_attendance->id]) }}
+                            @else {{ route('employee_attendance.store' ) }} @endif"  
                             method="post" 
                             enctype="multipart/form-data">
 
                         @csrf
-                        @if(isset($employee_salary->id))
+                        @if(isset($employee_attendance->id))
                             @method('PUT')
                             <input type="hidden" name="created_by" value="{{ auth()->id() }}">
                         @endif
@@ -58,35 +58,33 @@
 
 
                         <div class="form-group">
-                            <label for="amount" > Amount </label>
-                            <input id="amount" type="text" class="form-control " name="amount" value="{{ $employee_salary->amount ?? '' }}" placeholder="Enter your input" required="true" />
-                            @error('amount') <span class="text-danger">{{ $message }}</span>
+                            <label for="clock_in" > Clock In </label> 
+                            <input id="clock_in" type="datetime-local" class="form-control " name="clock_in" value="{{ $employee_attendance->clock_in ?? '' }}" placeholder="Enter your input" required="true" />
+                            @error('clock_in') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group">
-                            <label for="pay_date"> Pay Date</label>
-                            <input id="pay_date" type="date" class="form-control " name="pay_date" value="{{ date_format($employee_salary->pay_date, 'Y-m-d') ?? '' }}" placeholder="Enter your input" required="true" />
-                            @error('pay_date') <span class="text-danger">{{ $message }}</span>
+                            <label for="clock_out" > Clock Out </label>
+                            <input id="clock_out" type="datetime-local" class="form-control " name="clock_out" value="{{ $employee_attendance->clock_out ?? '' }}" placeholder="Enter your input" required="true" />
+                            @error('clock_out') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group">
-                            <label for="pay_frequency"> Pay Frequency</label>
-                            <select name="pay_frequency" id="pay_frequency" class="form-control">
-                                <option value="monthly" @if(isset($employee_salary->id)) {{  $employee_salary->pay_frequency =='monthly' ?'selected' : '' }} @endif> Monthly </option>
-                                <option value="weekly" @if(isset($employee_salary->id)) {{  $employee_salary->pay_frequency =='weekly' ?'selected' : '' }} @endif> Weekly </option>
-                                <option value="bi-weekly" @if(isset($employee_salary->id)) {{  $employee_salary->pay_frequency =='bi-weekly' ?'selected' : '' }} @endif> Bi-Weekly </option>
-                            </select>
-                            @error('fk_employee') <span class="text-danger">{{ $message }}</span>
+                            <label for="date"> Date</label> 
+                            <input id="date" type="date" class="form-control " name="date" value="{{ date_format($employee_attendance->date, 'Y-m-d') ?? '' }}" placeholder="Enter your input" required="true" />
+                            @error('date') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+
+                        
 
                         <div class="form-group">
                             <label for="employee">Employee</label>
                             <select name="fk_employee" id="fk_employee" class="form-control">
                                 @forelse($employees as $employee) 
-                                    <option value="{{ $employee->id }}" @if(isset($employee_salary->id)) {{  $employee->id == $employee_salary->fk_employee ? 'selected' : '' }} @endif> {{ $employee->name }} </option>
+                                    <option value="{{ $employee->id }}" @if(isset($employee_attendance->id)) {{  $employee->id == $employee_attendance->fk_employee ? 'selected' : '' }} @endif> {{ $employee->name }} </option>
                                 @empty
                                     <option selected disabled> -- No item -- </option> 
                                 @endforelse
@@ -100,7 +98,7 @@
                             <label for="tenant">Tenant</label>
                             <select name="fk_tenant" id="fk_tenant" class="form-control">
                                 @forelse($tenants as $tenant) 
-                                    <option value="{{ $tenant->id }}" @if(isset($employee_salary->id)) {{  $tenant->id == $employee_salary->fk_tenant ? 'selected' : '' }} @endif> {{ $tenant->name }} </option>
+                                    <option value="{{ $tenant->id }}" @if(isset($employee_attendance->id)) {{  $tenant->id == $employee_attendance->fk_tenant ? 'selected' : '' }} @endif> {{ $tenant->name }} </option>
                                 @empty
                                     <option selected disabled> -- No item -- </option> 
                                 @endforelse

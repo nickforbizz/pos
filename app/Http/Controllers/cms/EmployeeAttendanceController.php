@@ -30,6 +30,18 @@ class EmployeeAttendanceController extends Controller
                     }
                     return date_format($row->created_at, 'Y/m/d H:i');
                 })
+                ->editColumn('clock_in', function ($row) {
+                    if(is_null($row->clock_in)){
+                        return 'N/A';
+                    }
+                    return date_format($row->clock_in, 'Y/m/d');
+                })
+                ->editColumn('clock_out', function ($row) {
+                    if(is_null($row->clock_out)){
+                        return 'N/A';
+                    }
+                    return date_format($row->clock_out, 'Y/m/d');
+                })
                 ->editColumn('date', function ($row) {
                     if(is_null($row->date)){
                         return 'N/A';
