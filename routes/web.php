@@ -6,6 +6,7 @@ use App\Http\Controllers\cms\CustomerController;
 use App\Http\Controllers\cms\EmployeeAttendanceController;
 use App\Http\Controllers\cms\EmployeeController;
 use App\Http\Controllers\cms\EmployeeSalaryController;
+use App\Http\Controllers\cms\ExpenseController;
 use App\Http\Controllers\cms\NotificationController;
 use App\Http\Controllers\cms\OrderController;
 use App\Http\Controllers\cms\PermissionController;
@@ -108,6 +109,7 @@ Route::middleware('cms')->group(function () {
         'employee_salaries' => EmployeeSalaryController::class,
         'employee_attendance' => EmployeeAttendanceController::class,
         'orders' => OrderController::class,
+        'expenses' => ExpenseController::class,
     ]);
 
     // CART Routes
