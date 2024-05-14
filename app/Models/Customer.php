@@ -33,7 +33,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class Customer extends Model
+class Customer extends BaseModel
 {
 	use SoftDeletes, HasFactory;
 	protected $table = 'customers';

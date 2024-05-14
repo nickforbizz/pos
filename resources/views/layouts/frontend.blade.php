@@ -80,11 +80,11 @@
                             <a class="nav-link scroll-nav-link" href="{{ route('wellcome') }}">Home</a>
                         </li>
                         @endif
-                        <li class="nav-item mr-3">
-                            <a class="nav-link scroll-nav-link" href="{{ url('blogs') }}">Blog</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link scroll-nav-link" href="#support">Support</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link scroll-nav-link" href="{{ url('login') }}">Login</a>
                         </li>
                     </ul>
                 </div>
