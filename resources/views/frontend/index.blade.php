@@ -653,66 +653,7 @@
     </section>
     <!-- Team End -->
     
-    <!-- Blog Start -->
-    <section id="blog" class="pt-6">
-        <div class="container">
-            <!-- Heading Start -->
-            <div class="heading text-center">
-                <h2 class="h2">Latest Blog</h2>
-                <span class="sub-head">Explore our blog</span>
-            </div>
-            <!-- Heading End -->
-            <!-- Informational Text Start -->
-            <div class="info-txt text-center row">
-                <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
-                    <p>Ridens labitur evertitur pri cu, eam ne omnis definiebas. Qui ne habemus maluisset. Te nam timeam legendos.</p>
-                </div>
-            </div>
-            <!-- Informational Text End -->
 
-
-            <!-- Row Start -->
-            <div class="row">
-
-
-                @forelse($posts as $post)
-                    <div class="col-lg-4 col-md-4 col-sm-12 mb-4 mb-md-0">
-                        <!-- Blog Card Start -->
-                        <div class="blog-card sm-shadow p-3">
-                            <!-- Blog Image Start -->
-                            <div class="blog-img mb-3">
-                                <a href="blog-details-right-sidebar.html" class="d-block setImgBack"><img src="{{ url('storage/' . $post->featured_img) }}" alt="Blog 01"></a>
-                            </div>
-                            <!-- Blog Image End -->
-                            <!-- Blog Header Start -->
-                            <div class="mb-3">
-                                <!-- Blog Date -->
-                                <span class="d-block mb-3"><i class="ti-calendar mr-1"></i> {{ $post->created_at->format('F j, Y') }}</span>
-                                <span class="blog-head d-block">
-                                    <a href="blog-details-right-sidebar.html">{{ Str::limit($post->title, 25) }}</a>
-                                </span>
-                            </div>
-                            <!-- Blog Header End -->
-                            <!-- Blog Description Start -->
-                            <p>{{ Str::limit($post->content, 125) }}</p>
-                            <!-- Blog Description End -->
-                            <!-- Blog Read More Button -->
-                            <a href="blog-details-right-sidebar.html" class="btn arrow-btn p-0"><span>Read More</span><i class="ti-arrow-right"></i></a>
-                        </div>
-                        <!-- Blog Card End -->
-                    </div>
-                @empty
-                    <p>No Posts</p>
-                @endforelse
-              
-            </div>
-            <!-- Row End -->
-            <div class="text-center mt-5">
-                <a href="blog-right-sidebar.html" class="btn btn-rounded p-btn line">View All</a>
-            </div>
-        </div>
-    </section>
-    <!-- Blog End -->
     
     <!-- Support Start -->
     <section id="support" class="pt-6">

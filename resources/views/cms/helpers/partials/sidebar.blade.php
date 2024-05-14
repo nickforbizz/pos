@@ -38,13 +38,7 @@
 						<p>Dashboard</p>
 					</a>
 				</li>
-				<li class="nav-section">
-					<span class="sidebar-mini-icon">
-						<i class="fa fa-ellipsis-h"></i>
-					</span>
-					<h4 class="text-section">Modules</h4>
-					<hr>
-				</li>
+				<hr>
 
 				@if(auth()->user()->hasAnyRole(['admin', 'superadmin']))
 				<li class="nav-item @if(Route::is('users.*')) active @endif">
@@ -54,6 +48,14 @@
 					</a>
 				</li>
 				@endif
+
+				<li class="nav-section">
+					<span class="sidebar-mini-icon">
+						<i class="fa fa-ellipsis-h"></i>
+					</span>
+					<h4 class="text-section">Modules</h4>
+					<hr>
+				</li>
 
 				<li class="nav-item @if(Route::is('tenants.*')) active @endif">
 					<a href="{{ route('tenants.index') }}">
@@ -106,7 +108,7 @@
 
 				<li class="nav-item @if(Route::is('expenses.*')) active @endif">
 					<a href="{{ route('expenses.index') }}">
-						<i class="fas fa-shopping-bag"></i>
+						<i class="fas fa-money-check"></i>
 						<span class="sub-item"> Expenses </span>
 					</a>
 				</li>
@@ -134,7 +136,7 @@
 					</div>
 				</li>
 
-
+				<hr>
 				<li class="nav-item @if(Route::is('reports.*')) active @endif">
 					<a href="{{ route('reports.index') }}">
 						<i class="far fa-edit"></i>

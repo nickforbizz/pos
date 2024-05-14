@@ -64,10 +64,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="row user-stats text-center">
-                                        <div class="col">
-                                            <div class="number"> {{ auth()->user()->posts->count() }} </div>
-                                            <div class="title">Posts</div>
-                                        </div>
+                                       
                                         <div class="col">
                                             <div class="number">25</div>
                                             <div class="title">Entity 2</div>
