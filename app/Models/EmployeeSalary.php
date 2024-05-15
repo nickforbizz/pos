@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class EmployeeSalary extends Model
+class EmployeeSalary extends BaseModel
 {
 	use SoftDeletes, HasFactory;
 	protected $table = 'employee_salaries';

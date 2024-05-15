@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class Order extends Model
+class Order extends BaseModel
 {
 	use SoftDeletes, HasFactory;
 	protected $table = 'orders';

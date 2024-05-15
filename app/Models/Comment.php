@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class Comment extends Model
+class Comment extends BaseModel
 {
 	use SoftDeletes, HasFactory;
 	protected $table = 'comments';
