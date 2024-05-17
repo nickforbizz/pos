@@ -106,7 +106,10 @@ class ProductCategoryController extends Controller
         //     ], 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
         
         if ($request->ajax()) {
-            return Datatables::of($productCategory->products) ->addIndexColumn()
+            $data = Cache::remember('productCategory' . $productCategory->id . '_products', 60, function () use ($productCategory) {
+                return $productCategory->products;
+            });
+            return Datatables::of($data) ->addIndexColumn()
             ->editColumn('created_at', function ($row) {
                 return date_format($row->created_at, 'Y/m/d H:i');
             })

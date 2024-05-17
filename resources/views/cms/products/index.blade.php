@@ -51,7 +51,8 @@
                                     <th>Img</th>
                                     <th>Category</th>
                                     <th>Title</th>
-                                    <th>Content</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
                                     <th>Created At</th>
                                     <th style="width: 10%">Action</th>
                                 </tr>
@@ -91,8 +92,11 @@
                     data: 'title'
                 },
                 {
-                    data: 'description'
-                },					
+                    data: 'cost_price'
+                },		
+                {
+                    data: 'quantity'
+                },			
                 {
                     data: 'created_at',
                 },
