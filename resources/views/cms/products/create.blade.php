@@ -66,6 +66,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="make">Make</label>
+                            <input id="make" type="text" class="form-control form-control" 
+                                name="make" 
+                                placeholder="Enter make ..." 
+                                value="{{ old('make', $product->make ?? '')  }}"  />
+                            @error('make') <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="slug"> Slug</label>
                             <input id="slug" type="text" class="form-control form-control" 
                                

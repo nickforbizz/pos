@@ -65,6 +65,7 @@ class Product extends BaseModel
 		'color',
 		'size',
 		'label',
+		'make',
 		'photo',
 		'created_by',
 		'category_id',

@@ -53,6 +53,7 @@
                                     <th>Title</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
+                                    <th>Make</th>
                                     <th>Created At</th>
                                     <th style="width: 10%">Action</th>
                                 </tr>
@@ -96,7 +97,10 @@
                 },		
                 {
                     data: 'quantity'
-                },			
+                },		
+                {
+                    data: 'make'
+                },	
                 {
                     data: 'created_at',
                 },

@@ -27,6 +27,7 @@ class StoreProductRequest extends FormRequest
         return [
             'title' => 'required|min:2',
             'description' => 'required|min:5',
+            'make' => 'required|min:5',
             'category_id' => 'required',
             'featuredimg' => 'required',
             'slug' => 'unique:products,slug',

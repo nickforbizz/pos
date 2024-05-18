@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('color');
             $table->string('size');
             $table->string('label');
+            $table->string('make');
             $table->string('photo')->default('default_post.png');
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
