@@ -18,6 +18,7 @@ use App\Http\Controllers\cms\RoleController;
 use App\Http\Controllers\cms\SearchController;
 use App\Http\Controllers\cms\SupplierController;
 use App\Http\Controllers\cms\TenantController;
+use App\Http\Controllers\cms\ValuelistController;
 use App\Http\Controllers\frontend\ViewsController;
 use App\Http\Controllers\HomeController;
 use App\Models\User;
@@ -110,6 +111,7 @@ Route::middleware('cms')->group(function () {
         'employee_attendance' => EmployeeAttendanceController::class,
         'orders' => OrderController::class,
         'expenses' => ExpenseController::class,
+        'valuelists' => ValuelistController::class,
     ]);
 
     // CART Routes
