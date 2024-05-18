@@ -42,7 +42,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class Product extends Model
+class Product extends BaseModel
 {
 	use SoftDeletes, HasFactory;
 	protected $table = 'products';
@@ -65,6 +65,7 @@ class Product extends Model
 		'color',
 		'size',
 		'label',
+		'make',
 		'photo',
 		'created_by',
 		'category_id',

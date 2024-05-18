@@ -7,49 +7,47 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Comment
+ * Class Valuelist
  * 
  * @property int $id
- * @property int $post_id
- * @property int $created_by
- * @property string $comment
+ * @property string|null $type
+ * @property int|null $index
+ * @property string|null $value
+ * @property int|null $created_by
+ * @property bool|null $active
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property User $user
- * @property Post $post
+ * @property User|null $user
  *
  * @package App\Models
  */
-class Comment extends BaseModel
+class Valuelist extends Model
 {
-	use SoftDeletes, HasFactory;
-	protected $table = 'comments';
+	use SoftDeletes;
+	protected $table = 'valuelists';
 
 	protected $casts = [
-		'post_id' => 'int',
-		'created_by' => 'int'
+		'index' => 'int',
+		'created_by' => 'int',
+		'active' => 'bool'
 	];
 
 	protected $fillable = [
-		'post_id',
+		'type',
+		'index',
+		'value',
 		'created_by',
-		'comment'
+		'active'
 	];
 
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'created_by');
-	}
-
-	public function post()
-	{
-		return $this->belongsTo(Post::class);
 	}
 }

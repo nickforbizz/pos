@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class OrderItem extends Model
+class OrderItem extends BaseModel
 {
 	use SoftDeletes, HasFactory;
 	protected $table = 'order_items';

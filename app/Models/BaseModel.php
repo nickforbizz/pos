@@ -22,7 +22,7 @@ class TenantScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
 
-        if (Auth::check() && auth()->user()->hasRole('superadmin')) {
+        if (Auth::check() && !auth()->user()->hasRole('superadmin')) {
             $builder->where('fk_tenant', Auth::user()->fk_tenant);
         }
     }

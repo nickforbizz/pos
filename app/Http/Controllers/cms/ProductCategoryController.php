@@ -9,6 +9,9 @@ use App\Http\Requests\UpdateProductCategoryRequest;
 
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 class ProductCategoryController extends Controller
 {
@@ -18,16 +21,32 @@ class ProductCategoryController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = ProductCategory::orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('productCategories', 60, function () {
+            return ProductCategory::with('user')->orderBy('created_at', 'desc')->get();
+        });
+
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()
+                ->editColumn('name', function ($row) {
+                    return '<a data-toggle="tooltip" 
+                            href="' . route('productCategories.show', $row->id) . '" 
+                            class="btn btn-link btn-primary btn-lg" 
+                            data-original-title="Edit Record">
+                        ' . $row->name . '
+                    </a>';
+                })
+                ->editColumn('created_by', function ($row) {
+                    return !is_null($row->created_by) ? $row->user->name : null;
+                })
                 ->editColumn('created_at', function ($row) {
-                    return date_format($row->created_at, 'Y/m/d H:i');
+                    return !is_null($row->created_at) ? date_format($row->created_at, 'Y/m/d H:i') : null;
                 })
                 ->addColumn('action', function ($row) {
                     $btn_edit = $btn_del = null;
-                    if (auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) {
+                    $canEdit = Gate::allows('edit product categories');
+                    $canDelete = Gate::allows('delete product categories');
+                    if ((auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) && $canEdit) {
                         $btn_edit = '<a data-toggle="tooltip" 
                                         href="' . route('productCategories.edit', $row->id) . '" 
                                         class="btn btn-link btn-primary btn-lg" 
@@ -36,7 +55,7 @@ class ProductCategoryController extends Controller
                                 </a>';
                     }
 
-                    if (auth()->user()->hasRole('superadmin')) {
+                    if (auth()->user()->hasRole('superadmin') || $canDelete) {
                         $btn_del = '<button type="button" 
                                     data-toggle="tooltip" 
                                     title="" 
@@ -48,7 +67,7 @@ class ProductCategoryController extends Controller
                     }
                     return $btn_edit . $btn_del;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'name', 'created_by', 'created_at'])
                 ->make(true);
         }
 
@@ -76,10 +95,39 @@ class ProductCategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductCategory $productCategory)
+    public function show(ProductCategory $productCategory, Request $request)
     {
-        return response()
-            ->json($productCategory, 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
+        // $products = $productCategory->products;
+        // $productCategory->products = $products;
+        // return response()
+        //     ->json([
+        //         'productCategory' => $productCategory, 
+        //         'products' => Datatables::of($productCategory->products) ->addIndexColumn()
+        //     ], 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
+        
+        if ($request->ajax()) {
+            $data = Cache::remember('productCategory' . $productCategory->id . '_products', 60, function () use ($productCategory) {
+                return $productCategory->products;
+            });
+            return Datatables::of($data) ->addIndexColumn()
+            ->editColumn('created_at', function ($row) {
+                return date_format($row->created_at, 'Y/m/d H:i');
+            })
+            ->editColumn('photo', function ($row) {
+                return '<img class="tb_img" src="' . url('storage/' . $row->photo) . '" alt="' . $row->slug . '" data-toggle="popover" data-placement="top" data-content="<img src=' . url('storage/' . $row->photo) . ' style=\'max-height: 200px; max-width: 200px;\'>">';
+            })
+            ->editColumn('title', function ($row) {
+                return '<a data-toggle="tooltip" 
+                        href="' . route('products.show', $row->id) . '" 
+                        class="btn btn-link btn-primary btn-lg" 
+                        data-original-title="Edit Record">
+                    ' . Str::limit($row->title, 18, '...') . '
+                </a>';
+            })
+            ->rawColumns(['photo', 'title'])
+            ->make(true);
+        }
+        return view('cms.productCategories.show', compact('productCategory'));
     }
 
     /**
