@@ -14,7 +14,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Valuelists</a>
+                <a href="{{ route('valuelists.index') }}" class="text-primary">Valuelists</a>
             </li>
             <li class="separator">
                 <i class="flaticon-right-arrow"></i>

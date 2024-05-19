@@ -81,6 +81,7 @@
                                     <option selected disabled> -- No item -- </option> 
                                 @endforelse
                             </select>
+                            <input type="checkbox" id="select2_checkAll" >Select All<br>
 
                             
                             @error('permissions') <span class="text-danger">{{ $message }}</span>

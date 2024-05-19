@@ -34,7 +34,7 @@
 	<link rel="stylesheet" href="{{ asset('assets/css/cms.css') }}">
 
 
-	
+
 
 
 	@stack('styles')
@@ -159,11 +159,22 @@
 	<script>
 		$(document).ready(function() {
 			// select2 init
-			
+
 			$('.select2').select2({
-				placeholder: 'Select an option',	
+				placeholder: 'Select an option',
+				closeOnSelect: false,
+
 			});
-			
+			$("#select2_checkAll").click(function() {
+				if ($("#select2_checkAll").is(':checked')) {
+					$("#permission > option").prop("selected", "selected");
+					$("#permission").trigger("change");
+				} else {
+					$("#permission > option").removeAttr("selected");
+					$("#permission").val('').trigger("change");
+				}
+			});
+
 
 			// tinymce.init
 			tinymce.init({
@@ -173,7 +184,7 @@
 			});
 		});
 
-		
+
 		function readURL(input) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
@@ -197,7 +208,8 @@
 			}).then(function(willDelete) {
 				if (willDelete.isConfirmed) {
 					let payload = {
-						id, _token: '{{ csrf_token() }}'
+						id,
+						_token: '{{ csrf_token() }}'
 					};
 					$.ajax({
 						url: url,
@@ -225,7 +237,7 @@
 									$("#product_catsModal").modal('hide');
 								});
 							}
-	
+
 						},
 						error: function(err) {
 							console.error(err);
@@ -237,7 +249,7 @@
 						}
 					});
 
-				}else {
+				} else {
 					// Code for when the user clicks the "Cancel" button
 					// Prevent the form submission
 					event.preventDefault();

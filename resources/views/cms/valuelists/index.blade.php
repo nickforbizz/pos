@@ -32,7 +32,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">List of Available Record(s)</h4>
-                        @can('create Valuelists')
+                        @can('create valuelists')
                         <a href="{{ route('valuelists.create') }}" class="btn btn-primary btn-round ml-auto" >
                             <i class="flaticon-add mr-2"></i>
                             Add Row
@@ -45,7 +45,7 @@
 
                     <div class="table-responsive">
                         @include('cms.helpers.partials.feedback')
-                        <table id="tb_Valuelists" class="display table table-striped table-hover">
+                        <table id="tb_valuelists" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -74,10 +74,10 @@
 
 <script>
     $(document).ready(function() {
-        $('#tb_Valuelists').DataTable({
+        $('#tb_valuelists').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('Valuelists.index') }}",
+            ajax: "{{ route('valuelists.index') }}",
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'

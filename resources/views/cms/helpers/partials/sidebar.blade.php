@@ -74,7 +74,7 @@
 					</a>
 				</li>
 				@endif
-				
+
 				@if(auth()->user()->can('view customers') || auth()->user()->hasAnyRole('superadmin'))
 				<li class="nav-item @if(Route::is('customers.*')) active @endif">
 					<a href="{{ route('customers.index') }}">
@@ -84,7 +84,7 @@
 				</li>
 				@endif
 
-				@if(auth()->user()->can('view suppliers')  || auth()->user()->hasAnyRole('superadmin'))
+				@if(auth()->user()->can('view suppliers') || auth()->user()->hasAnyRole('superadmin'))
 				<li class="nav-item @if(Route::is('suppliers.*')) active @endif">
 					<a href="{{ route('suppliers.index') }}">
 						<i class="fas fa-user-tag"></i>
@@ -93,7 +93,7 @@
 				</li>
 				@endif
 
-				@if(auth()->user()->can('view employees-salaries')  || auth()->user()->hasAnyRole('superadmin'))
+				@if(auth()->user()->can('view employees-salaries') || auth()->user()->hasAnyRole('superadmin'))
 				<li class="nav-item @if(Route::is('employee_salaries.*')) active @endif">
 					<a href="{{ route('employee_salaries.index') }}">
 						<i class="fas fa-money-check-alt"></i>
@@ -152,7 +152,7 @@
 						</ul>
 					</div>
 				</li>
-				
+
 				<hr>
 				@endif
 
@@ -197,6 +197,7 @@
 												<span class="sub-item">Permissions</span>
 											</a>
 										</li>
+
 									</ul>
 								</div>
 							</li>
@@ -204,6 +205,12 @@
 							<li class="nav-item @if(Route::is('notifications.*')) active @endif">
 								<a href="{{ route('notifications.index') }}">
 									<span class="sub-item">Notifications </span>
+								</a>
+							</li>
+
+							<li class="nav-item @if(Route::is('valuelists.*')) active @endif">
+								<a href="{{ route('valuelists.index') }}">
+									<span class="sub-item">valuelists</span>
 								</a>
 							</li>
 

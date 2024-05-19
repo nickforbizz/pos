@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProductCategory;
 use App\Http\Requests\StoreProductCategoryRequest;
 use App\Http\Requests\UpdateProductCategoryRequest;
+use App\Http\Requests\ValuelistRequest;
 use App\Models\Valuelist;
 use Illuminate\Http\Request;
 use DataTables;
@@ -22,7 +23,9 @@ class ValuelistController extends Controller
     {
         // return datatable of the makes available
         $data = Cache::remember('valuelists', 60, function () {
-            return Valuelist::with('user')->orderBy('created_at', 'desc')->get();
+            // order by created_at and index desc
+
+            return Valuelist::with('user')->orderBy('created_at', 'desc')->orderBy('index', 'asc')->get();
         });
 
         if ($request->ajax()) {
@@ -78,9 +81,9 @@ class ValuelistController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ValuelistsRequest $request)
+    public function store(ValuelistRequest $request)
     {
-        Valuelist::create($request->all());
+        Valuelist::create($request->validated());
         return redirect()->back()->with('success', 'Record Created Successfully');
     }
 
@@ -131,5 +134,10 @@ class ValuelistController extends Controller
             'code' => -1,
             'msg' => 'Record did not delete'
         ], 422, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
+    }
+
+    public static function getValuesByType($type)
+    {
+        return Valuelist::where('type', $type)->get();
     }
 }
