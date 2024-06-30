@@ -134,8 +134,17 @@
 
 
 @push('scripts')
+<!-- Tiny MCE -->
+<script defer src="https://cdn.tiny.cloud/1/{{ env('TINYMCE_API_KEY') }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
     $(document).ready(function() {
+        // tinymce.init
+        tinymce.init({
+            selector: '.tiny_textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+
         $("#featuredimg").change(function() {
             readURL(this);
         });
