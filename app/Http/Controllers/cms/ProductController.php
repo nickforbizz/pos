@@ -6,14 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Helpers\GlobalHelper;
+use Illuminate\Support\Facades\Cache;
+use Intervention\Image\Facades\Image;
 use DataTables;
+use App\Helpers\GlobalHelper;
 
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\ProductCategory;
-use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -179,8 +180,15 @@ class ProductController extends Controller
                     Storage::disk('public')->delete($product->photo);
                 }
             }
+
+            $image = Image::make($request->file('featuredimg'));
+            $image->compress(75); // Adjust the quality level as needed (lower value = more compression)
+            $image->resize(650, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $image->save();
             $photo_filename = GlobalHelper::saveImage($request->file('featuredimg'), 'products', 'public');
-            $request->request->add(['photo' => $photo_filename]);
+            $request->request->add(['photo' => $photo_filename]); 
         }
 
         return  $request;

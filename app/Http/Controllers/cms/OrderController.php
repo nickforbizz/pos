@@ -11,7 +11,9 @@ use App\Http\Requests\OrderRequest;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Order;
+use App\Models\Product;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class OrderController extends Controller
 {
@@ -21,8 +23,15 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = Order::orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('orders', 60, function () {
+            return Order::with('customer')->orderBy('created_at', 'desc')->get();
+        });
+        
         if ($request->ajax()) {
+            $user = auth()->user();
+            $userRoles = Cache::get("user_roles_{$user->id}", []); // Default to empty array if null
+            $userPermissions = Cache::get("user_permissions_{$user->id}", []);
+
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($row) {
@@ -47,11 +56,11 @@ class OrderController extends Controller
                     if(is_null($row->fk_customer)){
                         return 'N/A';
                     }
-                    return $row->customer->email;
+                    return $row->customer?->email;
                 })
-                ->addColumn('action', function ($row) {
+                ->addColumn('action', function ($row) use ($user, $userRoles, $userPermissions) {
                     $btn_edit = $btn_del = null;
-                    if (auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) {
+                    if (in_array('superadmin', $userRoles) || in_array('admin', $userRoles) || in_array('editor', $userRoles) || $user->id == $row->created_by) {
                         $btn_edit = '<a data-toggle="tooltip" 
                                         href="' . route('orders.edit', $row->id) . '" 
                                         class="btn btn-link btn-primary btn-lg" 
@@ -60,7 +69,7 @@ class OrderController extends Controller
                                 </a>';
                     }
 
-                    if (auth()->user()->hasRole('superadmin')) {
+                    if (in_array('superadmin', $userRoles)) {
                         $btn_del = '<button type="button" 
                                     data-toggle="tooltip" 
                                     title="" 
@@ -86,10 +95,14 @@ class OrderController extends Controller
     public function create()
     {
         // get active tenants
-        $tenants = Tenant::where('active',1)->get();
-        $employees = Employee::where('active',1)->get();
-        $customers = Customer::where('active',1)->get();
-        return view('cms.orders.create', compact('tenants', 'employees', 'customers'));
+        $products = Cache::remember('products', 200, function () {
+            return Product::where('active',1)->get();
+        });
+
+        $customers = Cache::remember('customers', 200, function () {
+            return Customer::where('active',1)->get();
+        });
+        return view('cms.orders.create', compact('products', 'customers'));
     }
 
     /**
@@ -97,6 +110,8 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
+
+        dd($request->validated());
         Order::create($request->validated());
         return redirect()->back()->with('success', 'Record Created Successfully');
     }

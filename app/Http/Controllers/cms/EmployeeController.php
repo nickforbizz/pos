@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use App\Models\Employee;
 use App\Models\Tenant;
+use Illuminate\Support\Facades\Cache;
 
 class EmployeeController extends Controller
 {
@@ -17,7 +18,9 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = Employee::orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('employees', 60, function () {
+            return Employee::orderBy('created_at', 'desc')->get();
+        });
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()

@@ -13,7 +13,7 @@ class OrderRequest extends FormRequest
     public function authorize(): bool
     {
         $user = auth()->user();
-        return $user->hasAnyRole(['superadmin']);
+        return $user->hasAnyRole(['superadmin', 'admin']);
     }
 
     /**
@@ -25,13 +25,12 @@ class OrderRequest extends FormRequest
     {
         $rules = [
             'order_date' => 'required',
-            'fk_tenant' => 'required|exists:tenants,id',
-            'fk_employee' => 'required|exists:employees,id',
+            'fk_product' => 'required|exists:products,id',
             'fk_customer' => 'required|exists:customers,id',
+            'quantity' => 'required',
 
             // non required fields
             'total_amount' => 'nullable|string',
-            'status' => 'nullable|string',
             'active' => 'nullable|string',
         ];
 

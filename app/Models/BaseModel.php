@@ -12,7 +12,10 @@ class BaseModel extends Model
     protected static function booted()
     {
         static::addGlobalScope(new TenantScope);
+        
     }
+
+    
 }
 
 class TenantScope implements Scope
@@ -25,5 +28,6 @@ class TenantScope implements Scope
         if (Auth::check() && !auth()->user()->hasRole('superadmin')) {
             $builder->where('fk_tenant', Auth::user()->fk_tenant);
         }
+
     }
 }

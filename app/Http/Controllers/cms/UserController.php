@@ -15,6 +15,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Notifications\WelcomeEmailNotification;
 use DataTables;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -25,7 +26,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = User::where('active', 1)->get();
+        $data = Cache::remember('users', 60, function () {
+            return User::where('active', 1)->get();
+        });
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()

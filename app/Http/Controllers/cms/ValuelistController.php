@@ -23,8 +23,6 @@ class ValuelistController extends Controller
     {
         // return datatable of the makes available
         $data = Cache::remember('valuelists', 60, function () {
-            // order by created_at and index desc
-
             return Valuelist::with('user')->orderBy('created_at', 'desc')->orderBy('index', 'asc')->get();
         });
 

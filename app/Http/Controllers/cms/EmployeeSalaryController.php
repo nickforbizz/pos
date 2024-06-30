@@ -11,6 +11,7 @@ use App\Http\Requests\EmployeeSalaryRequest;
 use App\Models\Employee;
 use App\Models\EmployeeSalary;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class EmployeeSalaryController extends Controller
 {
@@ -20,7 +21,9 @@ class EmployeeSalaryController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = EmployeeSalary::orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('employees_salaries', 60, function () {
+            return EmployeeSalary::orderBy('created_at', 'desc')->get();
+        });
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()
