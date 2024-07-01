@@ -101,12 +101,12 @@ class OrderController extends Controller
     public function create()
     {
         // get active tenants
-        $products = Cache::remember('products', 200, function () {
-            return Product::where('active',1)->get();
+        $customers = Cache::remember('customers', 200, function () {
+            return Customer::where('active',1)->get();
         });
 
        
-        return view('cms.orders.create', compact('products', 'order'));
+        return view('cms.orders.create', compact('customers', 'order'));
     }
 
     /**
@@ -136,7 +136,7 @@ class OrderController extends Controller
     public function show(Order $order, Request $request)
     {
 
-        $data = Cache::remember('order_items', 200, function () {
+        $data = Cache::remember('order_items', 120, function () {
             return OrderItem::with('product')->orderBy('created_at', 'desc')->get();
         });
         
@@ -162,12 +162,12 @@ class OrderController extends Controller
                 ->addColumn('action', function ($row) use ($user, $userRoles, $userPermissions) {
                     $btn_edit = $btn_del = null;
                     if (in_array('superadmin', $userRoles) || in_array('admin', $userRoles) || in_array('editor', $userRoles) || $user->id == $row->created_by) {
-                        $btn_edit = '<a data-toggle="tooltip" 
-                                        href="' . route('orders.edit', $row->id) . '" 
+                        $btn_edit = '<button data-toggle="tooltip" 
+                                        onclick="editOrderItem(`' . $row->id . '`, `' . route('order_items.show', $row->id) . '`, `' . route('order_items.update', $row->id) . '`)"
                                         class="btn btn-link btn-primary btn-lg" 
                                         data-original-title="Edit Record">
                                     <i class="fa fa-edit"></i>
-                                </a>';
+                                    </button>';
                     }
 
                     if (in_array('superadmin', $userRoles)) {
@@ -200,10 +200,11 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        $tenants = Tenant::where('active',1)->get();
-        $employees = Employee::where('active',1)->get();
-        $customers = Customer::where('active',1)->get();
-        return view('cms.orders.create', compact('order','tenants', 'employees', 'customers'));
+        // $employees = Employee::where('active',1)->get();
+        $customers = Cache::remember('customers', 200, function () {
+            return Customer::where('active',1)->get();
+        });
+        return view('cms.orders.create', compact('order', 'customers'));
     }
 
     /**
