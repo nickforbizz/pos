@@ -42,7 +42,6 @@ class Order extends BaseModel
 	protected $casts = [
 		'fk_tenant' => 'int',
 		'fk_customer' => 'int',
-		'fk_employee' => 'int',
 		'order_date' => 'date',
 		'total_amount' => 'float',
 		'active' => 'int'
@@ -51,7 +50,7 @@ class Order extends BaseModel
 	protected $fillable = [
 		'fk_tenant',
 		'fk_customer',
-		'fk_employee',
+		'order_number',
 		'order_date',
 		'total_amount',
 		'status',
@@ -63,10 +62,7 @@ class Order extends BaseModel
 		return $this->belongsTo(Customer::class, 'fk_customer');
 	}
 
-	public function employee()
-	{
-		return $this->belongsTo(Employee::class, 'fk_employee');
-	}
+	
 
 	public function tenant()
 	{

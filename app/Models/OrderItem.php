@@ -19,7 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $fk_order
  * @property int|null $fk_product
  * @property int|null $quantity
- * @property float|null $selling_price
+ * @property float|null $unit_price
+ * @property float|null $amount
  * @property int|null $status
  * @property int|null $active
  * @property Carbon|null $created_at
@@ -42,7 +43,8 @@ class OrderItem extends BaseModel
 		'fk_order' => 'int',
 		'fk_product' => 'int',
 		'quantity' => 'int',
-		'selling_price' => 'float',
+		'unit_price' => 'float',
+		'amount' => 'float',
 		'status' => 'int',
 		'active' => 'int'
 	];
@@ -52,7 +54,8 @@ class OrderItem extends BaseModel
 		'fk_order',
 		'fk_product',
 		'quantity',
-		'selling_price',
+		'unit_price',
+		'amount',
 		'status',
 		'active'
 	];

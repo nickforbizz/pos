@@ -40,6 +40,8 @@
                 </div>
                 <div class="card-body">
 
+                {{ $order->order_number}}
+
                     <!-- form -->
                     @include('cms.helpers.partials.feedback')
                     <form id="orders-create" action="@if(isset($order->id))  
@@ -110,19 +112,7 @@
 
 
 
-                        <div class="form-group">
-                            <label for="customer"> Customer </label>
-                            <select name="fk_customer" id="fk_customer" class="form-control" required>
-                                <option selected> -- select product --</option>
-                                @forelse($customers as $customer)
-                                <option value="{{ $customer->id }}" @if(isset($order->id)) {{ $customer->id == $order->fk_customer ? 'selected' : '' }} @endif > {{ $customer->name }} </option>
-                                @empty
-                                <option selected disabled> -- No customer -- </option>
-                                @endforelse
-                            </select>
-                            @error('fk_customer') <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+                       
 
 
 

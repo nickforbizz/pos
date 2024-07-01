@@ -24,10 +24,7 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'order_date' => 'required',
-            'fk_product' => 'required|exists:products,id',
             'fk_customer' => 'required|exists:customers,id',
-            'quantity' => 'required',
 
             // non required fields
             'total_amount' => 'nullable|string',

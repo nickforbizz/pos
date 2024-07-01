@@ -12,6 +12,18 @@ class BaseModel extends Model
     protected static function booted()
     {
         static::addGlobalScope(new TenantScope);
+
+        static::creating(function ($model) {
+            if (Auth::check()) {
+                $model->fk_tenant = Auth::user()->fk_tenant;
+            }
+        });
+        
+        static::saving(function ($model) {
+            if (Auth::check()) {
+                $model->fk_tenant = Auth::user()->fk_tenant;
+            }
+        });
         
     }
 

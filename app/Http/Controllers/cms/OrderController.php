@@ -5,12 +5,14 @@ namespace App\Http\Controllers\cms;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Str;
 
 use App\Models\Tenant;
 use App\Http\Requests\OrderRequest;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -85,8 +87,12 @@ class OrderController extends Controller
                 ->make(true);
         }
 
+
+        $customers = Cache::remember('customers', 200, function () {
+            return Customer::where('active',1)->get();
+        });
         // render view
-        return view('cms.orders.index');
+        return view('cms.orders.index', compact('customers'));
     }
 
     /**
@@ -99,10 +105,8 @@ class OrderController extends Controller
             return Product::where('active',1)->get();
         });
 
-        $customers = Cache::remember('customers', 200, function () {
-            return Customer::where('active',1)->get();
-        });
-        return view('cms.orders.create', compact('products', 'customers'));
+       
+        return view('cms.orders.create', compact('products', 'order'));
     }
 
     /**
@@ -110,19 +114,85 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
+        // dd('sdsd');
+        $order_number =  date('Ymd').'/'.sprintf("%03d",$request->fk_customer).'/'.strtoupper(Str::random(5));
+        $order = new Order();
+        $order->fk_customer = $request->fk_customer;
+        $order->order_number = $order_number;
+        $order->status = 'pending';
+        $order->order_date = $request->order_date;
 
-        dd($request->validated());
-        Order::create($request->validated());
-        return redirect()->back()->with('success', 'Record Created Successfully');
+        if($order->save()){
+            return redirect()->route('orders.show', ['order' => $order->id])->with('success', 'Order successfully initialized');
+        }
+        return redirect()->back()->with('error', 'Error while Initializing your Order');
     }
+
+  
 
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Order $order, Request $request)
     {
-        return response()
-            ->json($order, 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
+
+        $data = Cache::remember('order_items', 200, function () {
+            return OrderItem::with('product')->orderBy('created_at', 'desc')->get();
+        });
+        
+        if ($request->ajax()) {
+            $user = auth()->user();
+            $userRoles = Cache::get("user_roles_{$user->id}", []); // Default to empty array if null
+            $userPermissions = Cache::get("user_permissions_{$user->id}", []);
+
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->editColumn('created_at', function ($row) {
+                    if(is_null($row->created_at)){
+                        return 'N/A';
+                    }
+                    return date_format($row->created_at, 'Y/m/d H:i');
+                })
+                ->editColumn('fk_product', function ($row) {
+                    if(is_null($row->fk_product)){
+                        return 'N/A';
+                    }
+                    return $row->product->title;
+                })
+                ->addColumn('action', function ($row) use ($user, $userRoles, $userPermissions) {
+                    $btn_edit = $btn_del = null;
+                    if (in_array('superadmin', $userRoles) || in_array('admin', $userRoles) || in_array('editor', $userRoles) || $user->id == $row->created_by) {
+                        $btn_edit = '<a data-toggle="tooltip" 
+                                        href="' . route('orders.edit', $row->id) . '" 
+                                        class="btn btn-link btn-primary btn-lg" 
+                                        data-original-title="Edit Record">
+                                    <i class="fa fa-edit"></i>
+                                </a>';
+                    }
+
+                    if (in_array('superadmin', $userRoles)) {
+                        $btn_del = '<button type="button" 
+                                    data-toggle="tooltip" 
+                                    title="" 
+                                    class="btn btn-link btn-danger" 
+                                    onclick="delRecord(`' . $row->id . '`, `' . route('orders.destroy', $row->id) . '`, `#tb_orders`)"
+                                    data-original-title="Remove">
+                                <i class="fa fa-times"></i>
+                            </button>';
+                    }
+                    return $btn_edit . $btn_del;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+
+        $products = Cache::remember('products', 200, function () {
+            return Product::where('active',1)->get();
+        });
+
+        return view('cms.orders.items', compact('products', 'order'))->with('success', 'Order successfully initialized');
+        
     }
 
     /**
