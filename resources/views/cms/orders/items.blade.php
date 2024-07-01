@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-
+                    <h4>@include('cms.helpers.partials.feedback')</h4>
                     <div class="items mb-3">
                         <div class="row">
                             <div class="col-sm-4">
@@ -99,14 +99,15 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                @include('cms.helpers.partials.feedback')
+                                
                                 <table id="tb_order_items" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>#</th>
                                             <th> Product </th>
                                             <th> Quantity </th>
-                                            <th> Price </th>
+                                            <th> Unit Price </th>
+                                            <th> Amount </th>
                                             <th> Active </th>
                                             <th> Created At </th>
                                             <th> Action </th>
@@ -150,8 +151,6 @@
                                                         <option selected disabled> -- No item -- </option>
                                                         @endforelse
                                                     </select>
-                                                    @error('fk_product') <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -161,16 +160,14 @@
                                                 <div class="form-group">
                                                     <label for="price"> Price </label>
                                                     <input id="price" type="text" readonly class="form-control " name="price" value="{{ $order->price ?? '' }}" required="true" />
-                                                    @error('price') <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
+                                                    
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="quantity"> Quantity </label>
                                                     <input id="quantity" type="number" min=1 class="form-control " name="quantity" value="{{ $order->quantity ?? '' }}" placeholder="Enter your input" required="true" />
-                                                    @error('quantity') <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -178,11 +175,9 @@
                                         <div class="form-group">
                                             <label for="total_amount"> Total Amount </label>
                                             <input id="total_amount" type="number" min=0 class="form-control " name="total_amount" value="{{ $order->total_amount ?? '' }}" readonly required="true" />
-                                            @error('total_amount') <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            
                                         </div>
-
-
+                                        <div id="put"></div>
 
                                         <div class="">
                                             <hr>
@@ -223,13 +218,16 @@
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'product'
+                    data: 'fk_product'
                 },
                 {
                     data: 'quantity'
                 },
                 {
-                    data: 'price'
+                    data: 'unit_price'
+                },
+                {
+                    data: 'amount'
                 },
                 {
                     data: 'active'
@@ -261,16 +259,44 @@
             });
             $("#quantity").attr('max', quantity);
             $("#price").val(price);
+            computeTotalAmt()
 
         });
 
         // Validate the quantity input field
         $('#quantity').on('input', function() {
-            var max = parseInt($(this).attr('max'), 10);
-            var value = parseInt($(this).val(), 10);
+            computeTotalAmt()
+        });
+    });
+
+    async function editOrderItem(id, orderItemUrl, updateOrderItemUrl){
+        try {
+            const response = await fetch(orderItemUrl);
+            if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+            }
+
+            const json = await response.json();
+            console.log(json.orderItem);
+            $("#fk_product").val(json.orderItem.fk_product).change()
+            $("#price").val(json.orderItem.unit_price)
+            $("#quantity").val(json.orderItem.quantity)
+            $("#total_amount").val(json.orderItem.amount)
+            $("#orderItemModal").modal();
+
+            $('#orders-create').attr('action', updateOrderItemUrl)
+            $("#put").html(`<input type="hidden" name="_method" value="PUT">`)
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    function computeTotalAmt(){
+        var max = parseInt($('#quantity').attr('max'), 10);
+            var value = parseInt($('#quantity').val(), 10);
 
             if (value > max) {
-                $(this).val(max);
+                $('#quantity').val(max);
                 value = max;
             }
             // total amount calculation
@@ -278,9 +304,7 @@
             let total = price * value;
             console.log(total);
             $('#total_amount').val(total)
-        });
-
-    });
+    }
 </script>
 
 @endpush

@@ -40,8 +40,6 @@
                 </div>
                 <div class="card-body">
 
-                {{ $order->order_number}}
-
                     <!-- form -->
                     @include('cms.helpers.partials.feedback')
                     <form id="orders-create" action="@if(isset($order->id))  
@@ -57,69 +55,72 @@
 
 
                         <div class="row">
-                            <div class="col-md-6">
+                        <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="order_number"> Order Number </label>
+                                    <input id="order_number" type="text" readonly class="form-control " name="order_number" value="{{ $order->order_number ?? '' }}" required="true" />
+                                    @error('order_number') <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="order_date"> Order Date</label>
-                                    <input id="order_date" type="date" class="form-control " name="order_date" value="@if(isset($order->id)) {{ date_format($order->order_date, 'Y-m-d') ?? '' }} @endif" placeholder="Enter your input" required="true" />
+                                    <input id="order_date" type="date" class="form-control " name="order_date" value="@if(isset($order->id)) {{ $order->order_date->format('dd/mm/yyyy') ?? '23/05/2023' }} @endif" placeholder="Enter your input" required="true" />
                                     @error('order_date') <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="product">Product</label>
-                                    <select name="fk_product" id="fk_product" class="form-control">
-                                        <option selected> -- select product --</option>
-                                        @forelse($products as $product)
-                                        <option value="{{ $product->id }}" data-quantity="{{ $product->quantity }}" data-price="{{ $product->selling_price }}" @if(isset($order->id)) {{ $product->id == $order->fk_product ? 'selected' : '' }} @endif> {{ $product->title }} </option>
+                                    <label for="customer">Customer</label>
+                                    <select name="fk_customer" id="fk_customer" class="form-control">
+                                        <option selected> -- select customer --</option>
+                                        @forelse($customers as $customer)
+                                        <option value="{{ $customer->id }}" @if(isset($order->id)) {{ $customer->id == $order->fk_customer ? 'selected' : '' }} @endif> {{ $customer->name }} </option>
                                         @empty
                                         <option selected disabled> -- No item -- </option>
                                         @endforelse
                                     </select>
-                                    @error('fk_product') <span class="text-danger">{{ $message }}</span>
+                                    @error('fk_customer') <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="price"> Price </label>
-                                    <input id="price" type="text" readonly class="form-control " name="price" value="{{ $order->price ?? '' }}" required="true" />
-                                    @error('price') <span class="text-danger">{{ $message }}</span>
+                                    <label for="customer">Status</label>
+                                    <select name="fk_customer" id="fk_customer" class="form-control">
+                                        <option selected> -- select customer --</option>
+                                        <option value="pending" @if(isset($order->id)) {{$order->status == 'pending' ? 'selected' : ''}} @endif> Pending </option>
+                                        <option value="processing" @if(isset($order->id)) {{$order->status == 'processing' ? 'selected' : ''}} @endif> Processing </option>
+                                        <option value="completed" @if(isset($order->id)) {{$order->status == 'completed' ? 'selected' : ''}} @endif> Completed </option>
+                                        <option value="canceled" @if(isset($order->id)) {{$order->status == 'canceled' ? 'selected' : ''}} @endif> Canceled </option>
+                                    </select>
+                                    @error('fk_customer') <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
+
+                            <div class="col-sm-8">
                                 <div class="form-group">
-                                    <label for="quantity"> Quantity </label>
-                                    <input id="quantity" type="number" min=1 class="form-control " name="quantity" value="{{ $order->quantity ?? '' }}" placeholder="Enter your input" required="true" />
-                                    @error('quantity') <span class="text-danger">{{ $message }}</span>
+                                    <label for="total_amount"> Total Amount </label>
+                                    <input id="total_amount" type="number" min=0 class="form-control " name="total_amount" value="{{ $order->total_amount ?? '' }}" readonly required="true" />
+                                    @error('total_amount') <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="total_amount"> Total Amount </label>
-                            <input id="total_amount" type="number" min=0 class="form-control " name="total_amount" value="{{ $order->total_amount ?? '' }}" readonly required="true" />
-                            @error('total_amount') <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-
-
-
-                       
-
-
 
 
                         <div class="card">
                             <div class="form-group">
-                                <button class="btn btn-success btn-round btn-block float-right">Submit</button>
+                                <button class="btn btn-success btn-round float-right">Submit</button>
+                                <a href="{{ route('orders.show', ['order'=>$order->id]) }}" class="btn btn-info btn-round float-left"> Add Items</a>
                             </div>
                         </div>
                     </form>
