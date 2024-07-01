@@ -7,6 +7,7 @@ use App\Http\Requests\TenantRequest;
 use Illuminate\Http\Request;
 use DataTables;
 use App\Models\Tenant;
+use Illuminate\Support\Facades\Cache;
 
 class TenantController extends Controller
 {
@@ -16,7 +17,9 @@ class TenantController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = Tenant::orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('tenants', 60, function () {
+            return Tenant::orderBy('created_at', 'desc')->get();
+        });
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()

@@ -10,6 +10,7 @@ use App\Models\Permission;
 
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Facades\Cache;
 
 class PermissionController extends Controller
 {
@@ -19,7 +20,9 @@ class PermissionController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = Permission::orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('permissions', 60, function () {
+            return Permission::orderBy('created_at', 'desc')->get();
+        });
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()

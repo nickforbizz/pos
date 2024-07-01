@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use App\Models\Supplier;
 use App\Models\Tenant;
+use Illuminate\Support\Facades\Cache;
 
 class SupplierController extends Controller
 {
@@ -17,7 +18,9 @@ class SupplierController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = Supplier::orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('suppliers', 60, function () {
+            return Supplier::orderBy('created_at', 'desc')->get();
+        });
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()

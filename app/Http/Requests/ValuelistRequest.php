@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
-class OrderRequest extends FormRequest
+class ValuelistRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class OrderRequest extends FormRequest
     public function authorize(): bool
     {
         $user = auth()->user();
-        return $user->hasAnyRole(['superadmin', 'admin']);
+        return $user->hasAnyRole(['superadmin']);
     }
 
     /**
@@ -24,10 +24,10 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'fk_customer' => 'required|exists:customers,id',
-
+            'type' => 'required|string|max:255',
+            'index' => 'required',
+            'value' => 'required|string|max:255',
             // non required fields
-            'total_amount' => 'nullable|string',
             'active' => 'nullable|string',
         ];
 
@@ -45,20 +45,12 @@ class OrderRequest extends FormRequest
         return [
             'unique' => ':attribute is already used',
             'required' => 'The :attribute field is required.',
-            'exists' => 'The selected :attribute does not exist.'
         ];
     }
 
 
     protected function prepareForValidation()
     {
-        $fk_tenant = $this->input('fk_tenant');
-        if (!auth()->user()->hasAnyRole(['superadmin'])) {
-            $fk_tenant = auth()->user()->fk_tenant;
-        }
-        $this->merge([
-            // 'slug' => Str::slug($this->input('name')),
-            'fk_tenant' => $fk_tenant,
-        ]);
+        
     }
 }

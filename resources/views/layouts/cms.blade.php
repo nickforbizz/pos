@@ -34,7 +34,7 @@
 	<link rel="stylesheet" href="{{ asset('assets/css/cms.css') }}">
 
 
-	
+
 
 
 	@stack('styles')
@@ -116,11 +116,9 @@
 	<script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
 	<script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
 
-	<!-- Tiny MCE -->
-	<script src="https://cdn.tiny.cloud/1/{{ env('TINYMCE_API_KEY') }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
 	<!-- jQuery UI -->
-	<script src="{{ asset('assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js') }}"></script>
+	<script defer src="{{ asset('assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js') }}"></script>
 	<script src="{{ asset('assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js') }}"></script>
 
 	<!-- jQuery Scrollbar -->
@@ -143,37 +141,42 @@
 	<script src="{{ asset('assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 
 	<!-- jQuery Vector Maps -->
-	<script src="{{ asset('assets/js/plugin/jqvmap/jquery.vmap.min.js') }}"></script>
-	<script src="{{ asset('assets/js/plugin/jqvmap/maps/jquery.vmap.world.js') }}"></script>
+	<!-- <script src="{{ asset('assets/js/plugin/jqvmap/jquery.vmap.min.js') }}"></script>
+	<script src="{{ asset('assets/js/plugin/jqvmap/maps/jquery.vmap.world.js') }}"></script> -->
 
 	<!-- Sweet Alert -->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
 
 	<!-- Atlantis JS -->
 	<script src="{{ asset('assets/js/atlantis.min.js') }}"></script>
 
 	<!-- select2 -->
-	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 	<script>
 		$(document).ready(function() {
 			// select2 init
-			
-			$('.select2').select2({
-				placeholder: 'Select an option',	
-			});
-			
 
-			// tinymce.init
-			tinymce.init({
-				selector: '.tiny_textarea',
-				plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-				toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+			$('.select2').select2({
+				placeholder: 'Select an option',
+				closeOnSelect: false,
+
 			});
+			$("#select2_checkAll").click(function() {
+				if ($("#select2_checkAll").is(':checked')) {
+					$("#permission > option").prop("selected", "selected");
+					$("#permission").trigger("change");
+				} else {
+					$("#permission > option").removeAttr("selected");
+					$("#permission").val('').trigger("change");
+				}
+			});
+
+
 		});
 
-		
+
 		function readURL(input) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
@@ -197,7 +200,8 @@
 			}).then(function(willDelete) {
 				if (willDelete.isConfirmed) {
 					let payload = {
-						id, _token: '{{ csrf_token() }}'
+						id,
+						_token: '{{ csrf_token() }}'
 					};
 					$.ajax({
 						url: url,
@@ -225,7 +229,7 @@
 									$("#product_catsModal").modal('hide');
 								});
 							}
-	
+
 						},
 						error: function(err) {
 							console.error(err);
@@ -237,7 +241,7 @@
 						}
 					});
 
-				}else {
+				} else {
 					// Code for when the user clicks the "Cancel" button
 					// Prevent the form submission
 					event.preventDefault();

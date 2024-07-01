@@ -9,6 +9,7 @@ use DataTables;
 use App\Models\Tenant;
 use App\Http\Requests\ExpenseRequest;
 use App\Models\Expense;
+use Illuminate\Support\Facades\Cache;
 
 class ExpenseController extends Controller
 {
@@ -18,7 +19,9 @@ class ExpenseController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = Expense::OrderBy('created_at', 'desc')->get();
+        $data = Cache::remember('expenses', 60, function () {
+            return Expense::OrderBy('created_at', 'desc')->get();
+        });
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()

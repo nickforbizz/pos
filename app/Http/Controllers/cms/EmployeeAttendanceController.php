@@ -11,6 +11,7 @@ use App\Http\Requests\EmployeeAttendanceRequest;
 use App\Models\Employee;
 use App\Models\EmployeeAttendance;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class EmployeeAttendanceController extends Controller
 {
@@ -20,7 +21,9 @@ class EmployeeAttendanceController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = EmployeeAttendance::orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('employees_attendances', 60, function () {
+            return EmployeeAttendance::orderBy('created_at', 'desc')->get();
+        });
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()

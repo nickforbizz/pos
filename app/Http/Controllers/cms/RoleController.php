@@ -10,6 +10,7 @@ use App\Models\Role;
 
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Facades\Cache;
 
 class RoleController extends Controller
 {
@@ -19,7 +20,9 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = Role::orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('roles', 60, function () {
+            return Role::orderBy('created_at', 'desc')->get();
+        });
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -94,7 +97,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $permissions = Permission::where('active', 1)->get();
+        $permissions = Cache::remember('permissions', 60, function () {
+            return  Permission::where('active', 1)->get();
+        });
         $role_permissions = $role->permissions()->pluck('name')->toArray();
         return view('cms.roles.create', compact('role', 'permissions', 'role_permissions'));
     }

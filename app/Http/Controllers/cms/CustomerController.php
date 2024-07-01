@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use App\Models\Customer;
 use App\Models\Tenant;
+use Illuminate\Support\Facades\Cache;
 
 class CustomerController extends Controller
 {
@@ -17,7 +18,9 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = Customer::orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('customers', 60, function () {
+            return Customer::orderBy('created_at', 'desc')->get();
+        });
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()

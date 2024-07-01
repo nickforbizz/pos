@@ -9,6 +9,7 @@ use App\Http\Controllers\cms\EmployeeSalaryController;
 use App\Http\Controllers\cms\ExpenseController;
 use App\Http\Controllers\cms\NotificationController;
 use App\Http\Controllers\cms\OrderController;
+use App\Http\Controllers\cms\OrderItemController;
 use App\Http\Controllers\cms\PermissionController;
 use App\Http\Controllers\cms\UserController;
 use App\Http\Controllers\cms\ProductCategoryController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\cms\RoleController;
 use App\Http\Controllers\cms\SearchController;
 use App\Http\Controllers\cms\SupplierController;
 use App\Http\Controllers\cms\TenantController;
+use App\Http\Controllers\cms\ValuelistController;
 use App\Http\Controllers\frontend\ViewsController;
 use App\Http\Controllers\HomeController;
 use App\Models\User;
@@ -109,8 +111,11 @@ Route::middleware('cms')->group(function () {
         'employee_salaries' => EmployeeSalaryController::class,
         'employee_attendance' => EmployeeAttendanceController::class,
         'orders' => OrderController::class,
+        'order_items' => OrderItemController::class,
         'expenses' => ExpenseController::class,
+        'valuelists' => ValuelistController::class,
     ]);
+    // Route::get('orders/items/{order}', [OrderController::class, 'items'])->name('orders.items');
 
     // CART Routes
     Route::get('cart', [ProductController::class, 'cart'])->name('cart');
