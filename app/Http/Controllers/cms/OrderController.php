@@ -238,12 +238,12 @@ class OrderController extends Controller
 
 
     public function invoice(Order $order) {
-        // $order = $order->with('product');
-        // dd($order);
         // Load the view file and pass order data to it
         $pdf = Pdf::loadView('cms.orders.invoice', compact('order'));
 
         // Render the PDF and force download
         return $pdf->download('invoice_' . $order->order_number . '.pdf');
     }
+
+   
 }

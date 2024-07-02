@@ -73,4 +73,9 @@ class Order extends BaseModel
 	{
 		return $this->hasMany(OrderItem::class, 'fk_order');
 	}
+
+	public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

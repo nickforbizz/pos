@@ -19,6 +19,7 @@ use App\Http\Controllers\cms\RoleController;
 use App\Http\Controllers\cms\SearchController;
 use App\Http\Controllers\cms\SupplierController;
 use App\Http\Controllers\cms\TenantController;
+use App\Http\Controllers\cms\TransactionController;
 use App\Http\Controllers\cms\ValuelistController;
 use App\Http\Controllers\frontend\ViewsController;
 use App\Http\Controllers\HomeController;
@@ -116,6 +117,10 @@ Route::middleware('cms')->group(function () {
         'valuelists' => ValuelistController::class,
     ]);
     Route::get('orders/invoice/{order}', [OrderController::class, 'invoice'])->name('orders.invoice');
+
+    // Transactions
+    Route::get('orders/{order}/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
+    Route::post('orders/{order}/transactions', [TransactionController::class, 'store'])->name('transactions.store');
 
     // CART Routes
     Route::get('cart', [ProductController::class, 'cart'])->name('cart');
