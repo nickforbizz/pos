@@ -6,16 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
-use App\Models\Tenant;
 use App\Http\Requests\OrderRequest;
 use App\Models\Customer;
-use App\Models\Employee;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -236,5 +234,16 @@ class OrderController extends Controller
             'code' => -1,
             'msg' => 'Record did not delete'
         ], 422, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
+    }
+
+
+    public function invoice(Order $order) {
+        // $order = $order->with('product');
+        // dd($order);
+        // Load the view file and pass order data to it
+        $pdf = Pdf::loadView('cms.orders.invoice', compact('order'));
+
+        // Render the PDF and force download
+        return $pdf->download('invoice_' . $order->order_number . '.pdf');
     }
 }

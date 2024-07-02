@@ -115,7 +115,7 @@ Route::middleware('cms')->group(function () {
         'expenses' => ExpenseController::class,
         'valuelists' => ValuelistController::class,
     ]);
-    // Route::get('orders/items/{order}', [OrderController::class, 'items'])->name('orders.items');
+    Route::get('orders/invoice/{order}', [OrderController::class, 'invoice'])->name('orders.invoice');
 
     // CART Routes
     Route::get('cart', [ProductController::class, 'cart'])->name('cart');

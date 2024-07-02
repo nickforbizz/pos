@@ -32,10 +32,16 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Add|Edit Record</h4>
+                        
                         <a href="{{ route('orders.index') }}" class="btn btn-primary btn-round ml-auto">
                             <i class="flaticon-left-arrow-4 mr-2"></i>
                             View Records
                         </a>
+                        <a href="{{ route('orders.invoice', ['order'=>$order->id]) }}" class="btn btn-info btn-round ml-1">
+                            <i class="flaticon-print mr-2"></i>
+                            Print Invoice
+                        </a>
+
                     </div>
                 </div>
                 <div class="card-body">
