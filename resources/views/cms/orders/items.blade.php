@@ -42,7 +42,7 @@
                             Print Invoice
                         </a>
 
-                        <button class="btn btn-info btn-round ml-2" data-toggle="modal" data-target="#orderPayModal" id="pay_order">
+                        <button class="btn @if($order->status != 'completed') btn-info @else btn-success @endif btn-round ml-2"  @if($order->status != 'completed') data-toggle="modal" data-target="#orderPayModal"   @endif id="pay_order">
                             <i class="flaticon-add mr-2"></i>
                             @if($order->status != 'completed') Pay @else Paid @endif
                         </button>
@@ -105,10 +105,16 @@
                     <div class="card">
                         <div class="card-header d-flex">
                             Items Ordered
+                            @if($order->status != 'completed')
                             <button class="btn btn-secondary btn-round ml-auto" data-toggle="modal" data-target="#orderItemModal" id="new_orderItem">
                                 <i class="flaticon-add mr-2"></i>
                                 Add Item
                             </button>
+                            @else
+                            <button class="btn btn-sm btn-success btn-round ml-auto" >
+                                Order Completed
+                            </button>
+                            @endif
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
