@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Http\Requests\OrderRequest;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -45,12 +45,6 @@ class OrderController extends Controller
                         return 'N/A';
                     }
                     return date_format($row->order_date, 'Y/m/d');
-                })
-                ->editColumn('employee', function ($row) {
-                    if(is_null($row->fk_employee)){
-                        return 'N/A';
-                    }
-                    return $row->employee->name;
                 })
                 ->editColumn('customer', function ($row) {
                     if(is_null($row->fk_customer)){
@@ -158,6 +152,9 @@ class OrderController extends Controller
                     return $row->product->title;
                 })
                 ->addColumn('action', function ($row) use ($user, $userRoles, $userPermissions) {
+                    if($row->order->status == 'completed'){
+                        return 'N/A';
+                    }
                     $btn_edit = $btn_del = null;
                     if (in_array('superadmin', $userRoles) || in_array('admin', $userRoles) || in_array('editor', $userRoles) || $user->id == $row->created_by) {
                         $btn_edit = '<button data-toggle="tooltip" 
@@ -238,12 +235,12 @@ class OrderController extends Controller
 
 
     public function invoice(Order $order) {
-        // $order = $order->with('product');
-        // dd($order);
         // Load the view file and pass order data to it
         $pdf = Pdf::loadView('cms.orders.invoice', compact('order'));
 
         // Render the PDF and force download
         return $pdf->download('invoice_' . $order->order_number . '.pdf');
     }
+
+   
 }
