@@ -163,6 +163,8 @@
 				closeOnSelect: false,
 
 			});
+
+
 			$("#select2_checkAll").click(function() {
 				if ($("#select2_checkAll").is(':checked')) {
 					$("#permission > option").prop("selected", "selected");
@@ -172,6 +174,12 @@
 					$("#permission").val('').trigger("change");
 				}
 			});
+
+			// Disable submit btn when submitting form
+			$(".submit-form-btn").click(function() {
+				$(this).html(`<i class="fa fa-spinner" aria-hidden="true"></i> Submitting ...`).attr('disabled', true);
+				$(this).parents('form').submit()
+			})
 
 
 		});
