@@ -28,9 +28,13 @@ class EmployeeRequest extends FormRequest
             'email' => 'required|string|email',
             'phone' => 'required|string|max:255',
             'fk_tenant' => 'required|exists:tenants,id',
+
+            'address' => 'nullable|string',
+            'status' => 'nullable|string',
+            'active' => 'nullable|string',
         ];
 
-        // Modify rules based on request method (create or edit)
+        // Modify rules based on request method (create or edit) 
         if ($this->method() === 'PUT') {
             // Remove domain uniqueness check for edit
             // unset($rules['domain']);

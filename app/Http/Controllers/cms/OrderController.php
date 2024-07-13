@@ -128,8 +128,8 @@ class OrderController extends Controller
     public function show(Order $order, Request $request)
     {
 
-        $data = Cache::remember('order_items', 120, function () {
-            return OrderItem::with('product')->orderBy('created_at', 'desc')->get();
+        $data = Cache::remember('order_items', 2, function () use ($order) {
+            return OrderItem::with('product')->where('fk_order', $order->id)->orderBy('created_at', 'desc')->get();
         });
         
         if ($request->ajax()) {
