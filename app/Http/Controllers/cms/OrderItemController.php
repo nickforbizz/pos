@@ -5,6 +5,7 @@ namespace App\Http\Controllers\cms;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -99,9 +100,17 @@ class OrderItemController extends Controller
             'quantity' => $request->quantity,
             'amount' => $request->total_amount,
         ]);
+
+        // update order
         $order = Order::find($request->fk_order);
         $order->total_amount += (float) $request->total_amount;
         $order->save();
+
+        // reduce stock
+        $product = Product::find($request->fk_product);
+        $product->quantity -= (int) $request->quantity;
+        $product->save();
+
         return redirect()->route('orders.show', ['order' => $request->fk_order])
         ->with('success', 'Item Added Successfully');
     }
@@ -148,10 +157,19 @@ class OrderItemController extends Controller
         }
 
         if($orderItem->save()){
+            // update order
             $order = Order::find($request->fk_order);
             $total_amount = $order->total_amount;
             $order->total_amount = (float)(($total_amount -  $item_total_amount) + $request->total_amount);
             $order->save();
+
+
+            // reduce stock
+            $product = Product::find($request->fk_product);
+            $product->quantity = ($product->quantity - (int) $orderItem->quantity) + (int) $request->quantity;
+            $product->save();
+
+
             return redirect()->route('orders.show', ['order' => $order->id])->with('success', 'Order successfully updated');
         }
         return redirect()->back()->with('error', 'Error while updating your Order');

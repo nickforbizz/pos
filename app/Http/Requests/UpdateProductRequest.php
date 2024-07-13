@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class UpdateProductRequest extends FormRequest
 {
@@ -30,6 +31,13 @@ class UpdateProductRequest extends FormRequest
                 Rule::unique('products')->ignore($this->product)
             ]
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'slug' => Str::slug($this->input('title')),
+        ]);
     }
 
     public function messages()
