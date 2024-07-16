@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class OrderItemController extends Controller
@@ -43,7 +44,7 @@ class OrderItemController extends Controller
                     $btn_edit = $btn_del = null;
                     if (in_array('superadmin', $userRoles) || in_array('admin', $userRoles) || in_array('editor', $userRoles) || $user->id == $row->created_by) {
                         $btn_edit = '<a data-toggle="tooltip" 
-                                        href="' . route('orders.edit', $row->id) . '" 
+                                        href="' . route('order_items.edit', $row->id) . '" 
                                         class="btn btn-link btn-primary btn-lg" 
                                         data-original-title="Edit Record">
                                     <i class="fa fa-edit"></i>
@@ -55,7 +56,7 @@ class OrderItemController extends Controller
                                     data-toggle="tooltip" 
                                     title="" 
                                     class="btn btn-link btn-danger" 
-                                    onclick="delRecord(`' . $row->id . '`, `' . route('orders.destroy', $row->id) . '`, `#tb_orders`)"
+                                    onclick="delRecord(`' . $row->id . '`, `' . route('order_items.destroy', $row->id) . '`, `#tb_order_items`)"
                                     data-original-title="Remove">
                                 <i class="fa fa-times"></i>
                             </button>';
@@ -139,10 +140,10 @@ class OrderItemController extends Controller
      */
     public function update(Request $request, OrderItem $orderItem)
     {
-        if($request->filled('fk_product')){
-            $orderItem->fk_product = $request->fk_product;
-        }
+        DB::beginTransaction();
+        
 
+        $prev_order_quantity = $orderItem->quantity;
         if($request->filled('quantity')){
             $orderItem->quantity = $request->quantity;
         }
@@ -156,23 +157,37 @@ class OrderItemController extends Controller
             $orderItem->amount = $request->total_amount;
         }
 
-        if($orderItem->save()){
-            // update order
-            $order = Order::find($request->fk_order);
-            $total_amount = $order->total_amount;
-            $order->total_amount = (float)(($total_amount -  $item_total_amount) + $request->total_amount);
-            $order->save();
+        try {
+            if($orderItem->save()){
+                // update order
+                $order = Order::find($request->fk_order);
+                $total_amount = $order->total_amount;
+                $order->total_amount = (float)(($total_amount -  $item_total_amount) + $request->total_amount);
 
+                if($order->save()){
+                    // reduce stock
+                    $product = Product::find($orderItem->product->id);
+                    // dd($product->quantity, $prev_order_quantity, $request->quantity);
+                    $product->quantity = ( (int)$product->quantity + (int) $prev_order_quantity ) - (int) $request->quantity;
+                    // dd($product);
+    
+                    if($product->save()){
+                        DB::commit();
+                        return redirect()->route('orders.show', ['order' => $order->id])->with('success', 'Item in the Order successfully updated');
+                    }
 
-            // reduce stock
-            $product = Product::find($request->fk_product);
-            $product->quantity = ($product->quantity - (int) $orderItem->quantity) + (int) $request->quantity;
-            $product->save();
-
-
-            return redirect()->route('orders.show', ['order' => $order->id])->with('success', 'Order successfully updated');
+                }
+    
+    
+            }
+            return redirect()->back()->with('error', 'Error while updating your item in the Order');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
         }
-        return redirect()->back()->with('error', 'Error while updating your Order');
+        
+
+        
     }
 
     /**
@@ -180,6 +195,21 @@ class OrderItemController extends Controller
      */
     public function destroy(OrderItem $orderItem)
     {
-        //
+
+        // dd($orderItem);
+        if ($orderItem->delete()) {
+            $product = Product::find($orderItem->product->id);
+            $product->quantity +=  $orderItem->quantity;
+            $product->save();
+            return response()->json([
+                'code' => 1,
+                'msg' => 'Record deleted successfully'
+            ], 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
+        }
+        
+        return response()->json([
+            'code' => -1,
+            'msg' => 'Record did not delete'
+        ], 422, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
     }
 }
