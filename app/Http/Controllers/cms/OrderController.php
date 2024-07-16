@@ -170,7 +170,7 @@ class OrderController extends Controller
                                     data-toggle="tooltip" 
                                     title="" 
                                     class="btn btn-link btn-danger" 
-                                    onclick="delRecord(`' . $row->id . '`, `' . route('orders.destroy', $row->id) . '`, `#tb_orders`)"
+                                    onclick="delRecord(`' . $row->id . '`, `' . route('order_items.destroy', $row->id) . '`, `#tb_order_items`)"
                                     data-original-title="Remove">
                                 <i class="fa fa-times"></i>
                             </button>';
@@ -182,7 +182,7 @@ class OrderController extends Controller
         }
 
 
-        $products = Cache::remember('products', 200, function () {
+        $products = Cache::remember('products', 60, function () {
             return Product::where('active',1)->get();
         });
 

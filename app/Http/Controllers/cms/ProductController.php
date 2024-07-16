@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\ProductCategory;
+use App\Models\Tenant;
 
 class ProductController extends Controller
 {
@@ -88,7 +89,8 @@ class ProductController extends Controller
     public function create()
     {
         $product_categories = ProductCategory::where('active', 1)->get();
-        return view('cms.products.create', compact('product_categories'));
+        $tenants = Tenant::where('active',1)->get();
+        return view('cms.products.create', compact('product_categories', 'tenants'));
     }
 
     /**
@@ -127,7 +129,8 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $product_categories = ProductCategory::where('active', 1)->get();
-        return view('cms.products.create', compact('product', 'product_categories'));
+        $tenants = Tenant::where('active',1)->get();
+        return view('cms.products.create', compact('product', 'product_categories', 'tenants'));
     }
 
     /**
@@ -135,7 +138,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $request = $this->storeFeaturedImg($request);
+        $request = $this->storeFeaturedImg($request); 
         $product->update($request->all());
 
         // Redirect the product to the product's profile page

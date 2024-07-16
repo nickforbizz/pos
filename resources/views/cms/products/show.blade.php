@@ -44,13 +44,13 @@
                                     <time class="date"> Cost Price </time>
                                     <span class="text"> {!! $product->cost_price !!} </span>
                                 </li>
-                                <li class="feed-item feed-item-danger">
-                                    <time class="date"> Quantity </time>
-                                    <span class="text"> {{ $product->quantity }} </span>
-                                </li>
                                 <li class="feed-item feed-item-info">
                                     <time class="date"> Selling Price </time>
                                     <span class="text"> {{ $product->selling_price  }} </span>
+                                </li>
+                                <li class="feed-item feed-item-danger">
+                                    <time class="date"> Quantity </time>
+                                    <span class="text"> {{ $product->quantity }} </span>
                                 </li>
                                 <li class="feed-item feed-item-warning">
                                     <time class="date"> Make </time>
@@ -72,7 +72,7 @@
                                 </li>
                                 <li class="feed-item feed-item-danger">
                                     <time class="date"> Color </time>
-                                    <span class="text"> {{ $product->color }} </span>
+                                    <span class="text" style="padding: 5px 15px; background-color: {{ $product->color }}"> {{ $product->color }} </span>
                                 </li>
                                 <li class="feed-item feed-item-success">
                                     <time class="date"> Size </time>

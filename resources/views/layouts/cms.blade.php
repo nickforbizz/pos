@@ -200,7 +200,7 @@
 		function delRecord(id, url, tb_id) {
 			Swal.fire({
 				title: "Are you sure?",
-				text: "Once deleted, you will not be able to recover this Record with ID " + id,
+				text: "You are about to delete this record",
 				icon: "warning",
 				buttons: true,
 				dangerMode: true,

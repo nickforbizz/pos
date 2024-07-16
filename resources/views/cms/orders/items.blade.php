@@ -202,7 +202,7 @@
                                             <hr>
                                             <div class="form-group">
                                                 <button type="button" class="btn btn-round  btn-secondary  float-left" data-dismiss="modal">Close</button>
-                                                <button class="btn btn-success btn-round btn-blodck float-right">Submit</button>
+                                                <button class="btn btn-success btn-round btn-blodck float-right submit-form-btn">Submit</button>
                                             </div>
                                         </div>
                                     </form>
@@ -248,7 +248,7 @@
                                             <hr>
                                             <div class="form-group">
                                                 <button type="button" class="btn btn-round  btn-secondary  float-left" data-dismiss="modal">Close</button>
-                                                <button class="btn btn-success btn-round btn-blodck float-right">Submit</button>
+                                                <button class="btn btn-success btn-round btn-blodck float-right submit-form-btn">Submit</button>
                                             </div>
                                         </div>
                                     </form>
