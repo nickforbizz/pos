@@ -7,6 +7,7 @@ use App\Http\Controllers\cms\EmployeeAttendanceController;
 use App\Http\Controllers\cms\EmployeeController;
 use App\Http\Controllers\cms\EmployeeSalaryController;
 use App\Http\Controllers\cms\ExpenseController;
+use App\Http\Controllers\cms\MpesaSTKPUSHController;
 use App\Http\Controllers\cms\NotificationController;
 use App\Http\Controllers\cms\OrderController;
 use App\Http\Controllers\cms\OrderItemController;
@@ -127,6 +128,9 @@ Route::middleware('cms')->group(function () {
     Route::get('add-to-cart/{id}', [ProductController::class, 'addToCart'])->name('addToCart');
     Route::patch('update-cart', [ProductController::class, 'updateCart'])->name('updateCart');
     Route::delete('remove-from-cart', [ProductController::class, 'removeCartItem'])->name('removeCartItem');
+
+    Route::post('/v1/mpesatest/stk/push', [MpesaSTKPUSHController::class, 'STKPush'])->name('lipanampesa');
+    
 
     Route::post('/notifications//mark-as-read', [NotificationController::class, 'markNotification'])->name('notifications.markNotification');
 });
