@@ -53,30 +53,25 @@
                         @endif
 
 
-                        <div class="form-group form-floating-label">
-                            @if(isset($role->id)) 
-                            <label for="name" class="">Name</label>
-                            <input id="name" type="text" name="name" class="form-control pl-2 input-border-bottom @error('name') is-invalid @enderror"  value="{{ $role->name ?? '' }}" readonly />
-                            @else
-                            <input id="name" type="text" class="form-control input-border-bottom @error('name') is-invalid @enderror" name="name"  value="{{ $role->name ?? '' }}" required />
+                        <div class="form-group">
                             <label for="name" class="placeholder"> Name</label>
-                            @endif
+                            <input id="name" type="text" placeholder="Enter your value ..." class="form-control @error('name') is-invalid @enderror" name="name"  value="{{ $role->name ?? '' }}" required />
                             @error('name') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        <div class="form-group form-floating-label">
-                            <input id="guard_name" type="text" class="form-control pl-2 input-border-bottom @error('guard_name') is-invalid @enderror" name="guard_name"  value="{{ $role->guard_name ?? '' }}" required />
+                        <div class="form-group">
                             <label for="guard_name" class="placeholder"> Guard Name</label>
+                            <input id="guard_name" type="text" placeholder="Enter your value ..." class="form-control pl-2 @error('guard_name') is-invalid @enderror" name="guard_name"  value="{{ $role->guard_name ?? 'web' }}" required />
                             @error('guard_name') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group">
                             <label for="permission"> Permissions </label>
-                            <select name="permissions[]" id="permission" multiple="multiple" class="form-control form-control select2">
+                            <select name="permissions[]" id="permission" multiple="multiple" class="form-control select2">
                                 @forelse($permissions as $permission)
-                                    <option value="{{ $permission->name }}" @if(in_array($permission->name, $role_permissions)) selected @endif > {{ $permission->name }} </option>
+                                    <option value="{{ $permission->name }}" @if(isset($role->id)) @if(in_array($permission->name, $role_permissions)) selected @endif @endif > {{ $permission->name }} </option>
                                 @empty
                                     <option selected disabled> -- No item -- </option> 
                                 @endforelse
@@ -88,13 +83,11 @@
                             @enderror
                         </div>
 
-                        
-
 
 
                         <div class="card">
-                            <div class="form-group form-floating-label">
-                                <button class="btn btn-success btn-round float-right">Submit</button>
+                            <div class="form-group">
+                                <button class="btn btn-success btn-round submit-form-btn float-right">Submit</button>
                             </div>
                         </div>
                     </form>

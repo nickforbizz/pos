@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
+<div class="container" style="margin-top: 15vh;">
+    <div class="row justify-content-center ">
 
 
         <div class="col-6" 
@@ -14,8 +14,8 @@
 
 
         <div class="col-6">
-            <div class="card" style="max-height:70vh">
-                <div class="card-header"> <h3 class="text-muted">{{ __('Login') }}</h3></div>
+            <div class="card shadow" style="max-height:720vh">
+                <div class="card-header bg-primary"> <h3 class="text-white">{{ __('Login') }}</h3></div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

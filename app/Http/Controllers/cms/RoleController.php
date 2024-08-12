@@ -67,7 +67,8 @@ class RoleController extends Controller
     public function create()
     {
         // render view
-        return view('cms.roles.create');
+        $permissions = Permission::select('name', 'id')->where('active',1)->get();
+        return view('cms.roles.create', compact('permissions'));
     }
 
     /**
@@ -75,8 +76,7 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-
-        $role = Role::create($request->all());
+        $role = Role::create($request->validated());
         $role->syncPermissions($request->input('permissions'));
         return redirect()
             ->route('roles.index')
