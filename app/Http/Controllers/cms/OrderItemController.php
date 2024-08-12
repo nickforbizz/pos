@@ -169,7 +169,6 @@ class OrderItemController extends Controller
                     $product = Product::find($orderItem->product->id);
                     // dd($product->quantity, $prev_order_quantity, $request->quantity);
                     $product->quantity = ( (int)$product->quantity + (int) $prev_order_quantity ) - (int) $request->quantity;
-                    // dd($product);
     
                     if($product->save()){
                         DB::commit();

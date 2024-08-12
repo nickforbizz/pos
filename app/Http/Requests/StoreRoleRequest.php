@@ -28,6 +28,7 @@ class StoreRoleRequest extends FormRequest
         return [
             'name' => ['required', 'min:2', Rule::unique('roles')],
             'guard_name' => 'required|min:2',
+            'permissions' => 'nullable',
         ];
     }
 
@@ -47,8 +48,6 @@ class StoreRoleRequest extends FormRequest
 
     public function passedValidation()
     {
-        $this->merge([
-            'created_by' => Auth::id()
-        ]);
+        
     }
 }
