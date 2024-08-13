@@ -72,7 +72,7 @@ class ProductCategoryController extends Controller
         }
 
         // render view
-        return view('cms.productCategories.index');
+        return view('cms.productcategories.index');
     }
 
     /**
@@ -80,7 +80,7 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
-        return view('cms.productCategories.create');
+        return view('cms.productcategories.create');
     }
 
     /**
@@ -127,7 +127,7 @@ class ProductCategoryController extends Controller
             ->rawColumns(['photo', 'title'])
             ->make(true);
         }
-        return view('cms.productCategories.show', compact('productCategory'));
+        return view('cms.productcategories.show', compact('productCategory'));
     }
 
     /**
@@ -135,7 +135,7 @@ class ProductCategoryController extends Controller
      */
     public function edit(ProductCategory $productCategory)
     {
-        return view('cms.productCategories.create', compact('productCategory'));
+        return view('cms.productcategories.create', compact('productCategory'));
     }
 
     /**
