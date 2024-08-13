@@ -75,8 +75,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="customer">Customer</label>
-                                    <select name="fk_customer" id="fk_customer" class="form-control">
-                                        <option selected> -- select customer --</option>
+                                    <select name="fk_customer" id="fk_customer" class="form-control select2">
                                         @forelse($customers as $customer)
                                         <option value="{{ $customer->id }}" @if(isset($order->id)) {{ $customer->id == $order->fk_customer ? 'selected' : '' }} @endif> {{ $customer->name }} </option>
                                         @empty
@@ -93,15 +92,15 @@
                             
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="customer">Status</label>
-                                    <select name="fk_customer" id="fk_customer" class="form-control">
+                                    <label for="status">Status</label>
+                                    <select name="status" id="status" class="form-control">
                                         <option selected> -- select customer --</option>
                                         <option value="pending" @if(isset($order->id)) {{$order->status == 'pending' ? 'selected' : ''}} @endif> Pending </option>
                                         <option value="processing" @if(isset($order->id)) {{$order->status == 'processing' ? 'selected' : ''}} @endif> Processing </option>
                                         <option value="completed" @if(isset($order->id)) {{$order->status == 'completed' ? 'selected' : ''}} @endif> Completed </option>
                                         <option value="canceled" @if(isset($order->id)) {{$order->status == 'canceled' ? 'selected' : ''}} @endif> Canceled </option>
                                     </select>
-                                    @error('fk_customer') <span class="text-danger">{{ $message }}</span>
+                                    @error('status') <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>

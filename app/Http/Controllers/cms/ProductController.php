@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\Laravel\Facades\Image;
 use DataTables;
 use App\Helpers\GlobalHelper;
 
@@ -184,8 +184,7 @@ class ProductController extends Controller
                 }
             }
 
-            $image = Image::make($request->file('featuredimg'));
-            $image->compress(75); // Adjust the quality level as needed (lower value = more compression)
+            $image = Image::read($request->file('featuredimg'));
             $image->resize(650, null, function ($constraint) {
                 $constraint->aspectRatio();
             });

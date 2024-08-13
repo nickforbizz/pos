@@ -56,33 +56,24 @@
                         @endif
 
 
-                        <div class="form-group form-floating-label">
-                            @if(isset($productCategory->id)) 
-                            <label for="name" class="">Name</label>
-                            <input id="name" type="text" class="form-control input-border-bottom @error('name') is-invalid @enderror"  value="{{ $productCategory->name ?? '' }}" readonly disabled />
-                            @else
-                            <input id="name" type="text" class="form-control input-border-bottom @error('name') is-invalid @enderror" name="name"  value="{{ $productCategory->name ?? '' }}" required />
-                            <label for="name" class="placeholder">name</label>
-                            @endif
-                            @error('email') <span class="text-danger">{{ $message }}</span>
+                        <div class="form-group">
+                            <label for="name"> Name </label>
+                            <input id="name" type="text" class="form-control  @error('name') is-invalid @enderror" name="name" placeholder="Enter your value"  value="{{ $productCategory->name ?? '' }}" required />
+                            @error('name') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        <div class="form-group form-floating-label">
-                            <textarea name="description" id="description" class="form-control input-border-bottom" >{{ $productCategory->description ?? '' }}
-                            </textarea>
-                            <label for="description" class="placeholder"> Description</label>
+                        <div class="form-group">
+                            <label for="description"> Description</label>
+                            <textarea name="description" placeholder="Enter your value" id="description" class="form-control ">{{ $productCategory->description ?? '' }}</textarea>
                             @error('description') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        
-
-
 
                         <div class="card">
                             <div class="form-group form-floating-label">
-                                <button class="btn btn-success btn-round float-right">Submit</button>
+                                <button class="btn btn-success btn-round submit-form-btn float-right">Submit</button>
                             </div>
                         </div>
                     </form>
