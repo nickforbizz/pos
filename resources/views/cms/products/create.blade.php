@@ -238,7 +238,7 @@
 
                 <div class="card">
                     <div class="form-group form-floating-label">
-                        <button class="btn btn-success btn-round float-right submit-form-btn">Submit</button>
+                        <button class="btn btn-success btn-round float-right ">Submit</button>
                     </div>
                 </div>
                 </form>

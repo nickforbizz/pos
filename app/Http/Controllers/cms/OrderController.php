@@ -93,7 +93,7 @@ class OrderController extends Controller
     public function create()
     {
         // get active tenants
-        $customers = Cache::remember('customers', 200, function () {
+        $customers = Cache::remember('customers', 60, function () {
             return Customer::where('active',1)->get();
         });
 
@@ -196,7 +196,7 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         // $employees = Employee::where('active',1)->get();
-        $customers = Cache::remember('customers', 200, function () {
+        $customers = Cache::remember('customers', 60, function () {
             return Customer::where('active',1)->get();
         });
         return view('cms.orders.create', compact('order', 'customers'));
