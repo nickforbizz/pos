@@ -42,7 +42,7 @@
                             Print Invoice
                         </a>
 
-                        <button class="btn @if($order->status != 'completed') btn-info @else btn-success @endif btn-round ml-2"  @if($order->status != 'completed') data-toggle="modal" data-target="#orderPayModal"   @endif id="pay_order">
+                        <button class="btn @if($order->status != 'completed') btn-info @else btn-success @endif btn-round ml-2" @if($order->status != 'completed') data-toggle="modal" data-target="#orderPayModal" @endif id="pay_order">
                             <i class="flaticon-add mr-2"></i>
                             @if($order->status != 'completed') Pay @else Paid @endif
                         </button>
@@ -111,7 +111,7 @@
                                 Add Item
                             </button>
                             @else
-                            <button class="btn btn-sm btn-success btn-round ml-auto" >
+                            <button class="btn btn-sm btn-success btn-round ml-auto">
                                 Order Completed
                             </button>
                             @endif
@@ -241,6 +241,22 @@
                                                     </select>
                                                 </div>
 
+                                                <!-- mpesa inputs -->
+                                                <div id="mpesa_inputs">
+                                                    <div class="form-group">
+                                                        <label for="phonenumber"> Phone Number </label>
+                                                        <input id="phonenumber" type="text"  class="form-control " name="phonenumber"  />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="amount"> Amount </label>
+                                                        <input id="amount" type="number" min=1 value="1" class="form-control " name="amount"  />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="account_number"> Acc No </label>
+                                                        <input id="account_number" type="text" class="form-control " name="account_number"  />
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
 
@@ -310,14 +326,21 @@
         });
         // #tb_order_items
 
-
+        $("#mpesa_inputs").hide();
+        $("#payment_method").change(function(){
+            let selectedOption = $(this).val();
+            $("#mpesa_inputs").hide()
+            if(selectedOption == 'mpesa'){
+                $("#mpesa_inputs").show()
+            }
+        })
 
         $("#fk_product").trigger('change');
 
         $("#fk_product").change(function() {
-            var selectedOption = $(this).find(':selected');
-            var price = selectedOption.data('price');
-            var quantity = selectedOption.data('quantity');
+            let selectedOption = $(this).find(':selected');
+            let price = selectedOption.data('price');
+            let quantity = selectedOption.data('quantity');
             console.log({
                 quantity,
                 price

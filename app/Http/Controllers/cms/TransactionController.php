@@ -22,6 +22,14 @@ class TransactionController extends Controller
             'payment_method' => 'required|in:cash,mpesa',
         ]);
 
+
+        // mpesa
+        if( $request->payment_method == 'mpesa'){
+            $mpesaSTKPUSHController = app(MpesaSTKPUSHController::class);
+            $res = $mpesaSTKPUSHController->STKPush($request);
+            dd($res);
+        }
+
         if($order->total_amount < 1){
             return redirect()->route('orders.show', $order)->with('error', 'Error, Transaction cant be completed with 0 amount.');
         }

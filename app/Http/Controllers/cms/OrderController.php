@@ -34,6 +34,14 @@ class OrderController extends Controller
 
             return Datatables::of($data)
                 ->addIndexColumn()
+                ->editColumn('order_number', function ($row) {
+                    return '<a data-toggle="tooltip" 
+                            href="' . route('orders.show', $row->id) . '" 
+                            class="" 
+                            data-original-title="Show Record">
+                        ' . $row->order_number . '
+                    </a>';
+                })
                 ->editColumn('created_at', function ($row) {
                     if(is_null($row->created_at)){
                         return 'N/A';
@@ -75,7 +83,7 @@ class OrderController extends Controller
                     }
                     return $btn_edit . $btn_del;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'order_number'])
                 ->make(true);
         }
 

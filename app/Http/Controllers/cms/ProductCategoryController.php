@@ -31,8 +31,8 @@ class ProductCategoryController extends Controller
                 ->editColumn('name', function ($row) {
                     return '<a data-toggle="tooltip" 
                             href="' . route('productCategories.show', $row->id) . '" 
-                            class="btn btn-link btn-primary btn-lg" 
-                            data-original-title="Edit Record">
+                            class="" 
+                            data-original-title="Show Record">
                         ' . $row->name . '
                     </a>';
                 })

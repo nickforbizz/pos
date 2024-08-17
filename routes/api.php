@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Mpesa STK Push Callback Route
 Route::post('v1/confirm', [MpesaSTKPUSHController::class, 'STKConfirm'])->name('mpesa.confirm');
+Route::post('v1/access_token', [MpesaSTKPUSHController::class, 'generateAccessToken'])->name('mpesa.generateAccessToken');
