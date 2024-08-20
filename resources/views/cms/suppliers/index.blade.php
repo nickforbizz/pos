@@ -52,8 +52,6 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Address</th>
-                                    <th>Contact Person</th>
                                     <th>Active</th>
                                     <th>Created At</th>
                                     <th>Action</th>
@@ -92,12 +90,6 @@
                 },
                 {
                     data: 'phone'
-                },
-                {
-                    data: 'address'
-                },
-                {
-                    data: 'contact_person'
                 },
                 {
                     data: 'active'
