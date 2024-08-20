@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 
 class SupplierRequest extends FormRequest
@@ -13,7 +15,7 @@ class SupplierRequest extends FormRequest
     public function authorize(): bool
     {
         $user = auth()->user();
-        return $user->hasAnyRole(['superadmin']);
+        return $user->hasAnyRole(['superadmin']) || Auth::user()->can('create supplier');
     }
 
     /**
@@ -23,9 +25,14 @@ class SupplierRequest extends FormRequest
      */
     public function rules(): array
     {
+        $supplierId = $this->route('supplier');
         $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email',
+            'email' => [
+                'required',
+                'min:2',
+                Rule::unique('suppliers', 'email')->ignore($supplierId), // Ignore the email if it's unchanged
+            ],
             'phone' => 'required|string|max:255',
             'contact_person' => 'required|string|max:255',
             'fk_tenant' => 'required|exists:tenants,id',
