@@ -47,6 +47,7 @@ class MpesaSTKPUSHController extends Controller
             $this->result_desc = 'Success';
         }
         return response()->json([
+            'created_by' => auth()->user()->id,
             'ResultCode' => $this->result_code,
             'ResultDesc' => $this->result_desc
         ]);
